@@ -12,13 +12,23 @@ import Shared
 
 struct SplashScreen: View {
     @State private var versionStatus: VersionStatus? = nil
+    let getVersionStatus = GetVersionStatus(
+        remoteVersion: DataRemoteVersion(),
+        deviceVersion: IosDeviceVersion()
+    )
+    
     var body: some View {
         VStack {
-            Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            VersionDeviceMolecule(versionStatus : self.versionStatus)
         }.task {
-            versionStatus = GetVersionStatus(
-            
-            ).invoke()
+            do {
+                let asyncResult = try await getVersionStatus.invoke()
+                DispatchQueue.main.async {
+                    self.versionStatus = asyncResult
+                }
+            } catch {
+                print("Error: \(error)")
+            }
         }
     }
 }

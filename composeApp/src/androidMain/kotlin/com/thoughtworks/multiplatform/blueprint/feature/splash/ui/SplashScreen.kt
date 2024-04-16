@@ -26,7 +26,7 @@ fun SplashScreen(
 
 @Composable
 fun VersionDeviceMolecule(modifier: Modifier = Modifier, state: VersionStatus) {
-    Column {
+    Column(modifier = modifier) {
         Text("Version Info")
         Text("stable: ${state.stable}")
         Text("min: ${state.min}")

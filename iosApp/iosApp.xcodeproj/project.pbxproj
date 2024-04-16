@@ -10,18 +10,22 @@
 		058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557BA273AAA24004C7B11 /* Assets.xcassets */; };
 		058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */; };
 		2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2152FB032600AC8F00CF470E /* iOSApp.swift */; };
+		298B15E91212CC819028F28C /* VersionDeviceMolecule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298B1B3022227C001C9DC064 /* VersionDeviceMolecule.swift */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		A8182CEE2BCCBB1A0021F71A /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8182CED2BCCBB1A0021F71A /* SplashScreen.swift */; };
+		A83CA3172BCE00CF0079A1CB /* IosDeviceVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83CA3162BCE00CF0079A1CB /* IosDeviceVersion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		058557BA273AAA24004C7B11 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		058557D8273AAEEB004C7B11 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2152FB032600AC8F00CF470E /* iOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSApp.swift; sourceTree = "<group>"; };
+		298B1B3022227C001C9DC064 /* VersionDeviceMolecule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VersionDeviceMolecule.swift; path = Molecule/VersionDeviceMolecule.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = iosApp.app; path = KotlinProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF82242A565900829871 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A8182CED2BCCBB1A0021F71A /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		A83CA3162BCE00CF0079A1CB /* IosDeviceVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IosDeviceVersion.swift; sourceTree = "<group>"; };
 		AB3632DC29227652001CCB65 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -72,12 +76,14 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				A83CA30F2BCE004E0079A1CB /* Platform */,
 				A8182CEA2BCCBA6C0021F71A /* Feature */,
 				058557BA273AAA24004C7B11 /* Assets.xcassets */,
 				7555FF82242A565900829871 /* ContentView.swift */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				2152FB032600AC8F00CF470E /* iOSApp.swift */,
 				058557D7273AAEEB004C7B11 /* Preview Content */,
+				298B1B3022227C001C9DC064 /* VersionDeviceMolecule.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -104,6 +110,46 @@
 				A8182CED2BCCBB1A0021F71A /* SplashScreen.swift */,
 			);
 			name = UI;
+			sourceTree = "<group>";
+		};
+		A83CA30F2BCE004E0079A1CB /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				A83CA3182BCE04800079A1CB /* DesignSystem */,
+				A83CA3102BCE00560079A1CB /* Version */,
+			);
+			name = Platform;
+			sourceTree = "<group>";
+		};
+		A83CA3102BCE00560079A1CB /* Version */ = {
+			isa = PBXGroup;
+			children = (
+				A83CA3112BCE005E0079A1CB /* Domain */,
+			);
+			path = Version;
+			sourceTree = "<group>";
+		};
+		A83CA3112BCE005E0079A1CB /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				A83CA3162BCE00CF0079A1CB /* IosDeviceVersion.swift */,
+			);
+			name = Domain;
+			sourceTree = "<group>";
+		};
+		A83CA3182BCE04800079A1CB /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				A83CA3192BCE048F0079A1CB /* Molecule */,
+			);
+			name = DesignSystem;
+			sourceTree = "<group>";
+		};
+		A83CA3192BCE048F0079A1CB /* Molecule */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Molecule;
 			sourceTree = "<group>";
 		};
 		AB1DB47929225F7C00F7AF9C /* Configuration */ = {
@@ -212,7 +258,9 @@
 			files = (
 				A8182CEE2BCCBB1A0021F71A /* SplashScreen.swift in Sources */,
 				2152FB042600AC8F00CF470E /* iOSApp.swift in Sources */,
+				A83CA3172BCE00CF0079A1CB /* IosDeviceVersion.swift in Sources */,
 				7555FF83242A565900829871 /* ContentView.swift in Sources */,
+				298B15E91212CC819028F28C /* VersionDeviceMolecule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

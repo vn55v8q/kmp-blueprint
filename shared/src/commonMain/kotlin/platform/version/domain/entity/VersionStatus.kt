@@ -6,4 +6,10 @@ data class VersionStatus(
     val min: String,
     val isForceUpdate: Boolean,
     val isSoftUpdate: Boolean
-)
+) {
+    companion object {
+        fun empty(): VersionStatus {
+            return VersionStatus("", "", "", false, false)
+        }
+    }
+}
