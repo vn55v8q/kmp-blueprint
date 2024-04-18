@@ -5,7 +5,7 @@ import com.thoughtworks.multiplatform.blueprint.platform.version.domain.AndroidD
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import platform.version.data.DataRemoteVersion
+import platform.version.data.SharedRemoteVersion
 import platform.version.domain.DeviceVersion
 import platform.version.domain.GetVersionStatus
 import platform.version.domain.RemoteVersion
@@ -16,7 +16,7 @@ val splashModule = module {
     }
 
     single<RemoteVersion> {
-        DataRemoteVersion()
+        SharedRemoteVersion()
     }
 
     single {

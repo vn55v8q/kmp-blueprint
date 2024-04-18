@@ -10,7 +10,7 @@ import platform.version.data.response.VersionResponse
 import platform.version.domain.RemoteVersion
 import platform.version.domain.entity.VersionApp
 
-class DataRemoteVersion : RemoteVersion {
+class SharedRemoteVersion : RemoteVersion {
     private val url = "https://vn55v8q.github.io/screen-orchestra-repository/version.json"
     private val client = HttpClient() {
         install(ContentNegotiation) {

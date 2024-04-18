@@ -13,7 +13,7 @@ import Shared
 struct SplashScreen: View {
     @State private var versionStatus: VersionStatus? = nil
     let getVersionStatus = GetVersionStatus(
-        remoteVersion: DataRemoteVersion(),
+        remoteVersion: SharedRemoteVersion(),
         deviceVersion: IosDeviceVersion()
     )
     
