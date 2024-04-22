@@ -1,7 +1,5 @@
-package platform.version
+package platform.version.domain
 
-import platform.version.domain.IsMinVersion
-import platform.version.domain.VersionFormatException
 import kotlin.test.Test
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse

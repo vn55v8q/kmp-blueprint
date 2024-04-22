@@ -12,9 +12,9 @@ kotlin {
             }
         }
     }
-    
+
     sourceSets {
-        
+
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
@@ -69,6 +69,25 @@ android {
         implementation(libs.koin.core)
         implementation(libs.koin.android)
         implementation(libs.kotlinx.coroutines.android)
+        implementation("androidx.navigation:navigation-compose:2.7.7")
+    }
+
+    flavorDimensions += "flavor"
+    productFlavors {
+        create("dev") {
+            dimension = "flavor"
+            applicationIdSuffix = ".dev"
+            resValue("string", "app_name", "Blueprint-Dev")
+        }
+        create("qa") {
+            dimension = "flavor"
+            applicationIdSuffix = ".qa"
+            resValue("string", "app_name", "Blueprint-QA")
+        }
+        create("prod") {
+            dimension = "flavor"
+            resValue("string", "app_name", "Blueprint")
+        }
     }
 }
 
