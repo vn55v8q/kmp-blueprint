@@ -17,7 +17,7 @@ class DefaultClientOnboarding : ClientOnboarding {
         return listOf(
             getFirstPage(),
             getSecondPage(),
-            getFirstPage(),
+            getThirdPage(),
         )
     }
 
@@ -25,7 +25,7 @@ class DefaultClientOnboarding : ClientOnboarding {
         return PageOnboarding(
             id = "page1",
             name = "Page one",
-            url = ""
+            url = "https://developer.android.com/static/codelabs/jetpack-compose-animation/img/jetpack_compose_logo_with_rocket_856.png"
         )
     }
 
@@ -33,7 +33,7 @@ class DefaultClientOnboarding : ClientOnboarding {
         return PageOnboarding(
             id = "page2",
             name = "Page two",
-            url = ""
+            url = "https://cdn.hashnode.com/res/hashnode/image/upload/v1627633315818/vRdBa84mG.png"
         )
     }
 
@@ -41,7 +41,7 @@ class DefaultClientOnboarding : ClientOnboarding {
         return PageOnboarding(
             id = "page3",
             name = "Page third",
-            url = ""
+            url = "https://bignerdranch.com/wp-content/uploads/2021/05/swiftui-logo.jpg"
         )
     }
 }
