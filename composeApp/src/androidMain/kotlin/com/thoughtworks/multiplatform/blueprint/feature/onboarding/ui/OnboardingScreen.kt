@@ -1,21 +1,20 @@
 package com.thoughtworks.multiplatform.blueprint.feature.onboarding.ui
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.*
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.presentation.OnboardingViewState
@@ -29,6 +28,12 @@ fun OnboardingScreen(
 ) {
     var isShowFinish by remember {
         mutableStateOf(false)
+    }
+    val isShowLoading = state.onboarding == null
+    if (isShowLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
     }
     state.onboarding?.let { safeOnboarding ->
         val pagerState = rememberPagerState(pageCount = {
@@ -74,19 +79,33 @@ fun OnboardingScreen(
                 }
             },
             bottomBar = {
-                Box(modifier = Modifier.fillMaxWidth(), Alignment.Center) {
-                    if (isShowFinish) {
-                        AnimatedVisibility(visible = true) {
-                            Button(
-                                modifier = Modifier.height(40.dp),
-                                onClick = onFinish
-                            ) {
-                                Text("Finish")
-                            }
+                Box(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), Alignment.Center) {
+                    val density = LocalDensity.current
+                    AnimatedVisibility(
+                        modifier = Modifier.height(40.dp),
+                        visible = isShowFinish,
+                        enter = slideInVertically {
+                            // Slide in from 40 dp from the top.
+                            with(density) { -40.dp.roundToPx() }
+                        } + expandVertically(
+                            // Expand from the top.
+                            expandFrom = Alignment.Top
+                        ) + fadeIn(
+                            // Fade in with the initial alpha of 0.3f.
+                            initialAlpha = 0.3f
+                        ),
+                        exit = slideOutVertically() + shrinkVertically() + fadeOut()
+                    ) {
+                        Button(
+                            modifier = Modifier.height(40.dp),
+                            onClick = onFinish
+                        ) {
+                            Text("Finish")
                         }
-                    } else {
-                        Spacer(Modifier.height(40.dp))
                     }
+                }
+                if (isShowFinish.not()) {
+                    Spacer(Modifier.height(56.dp))
                 }
             }
         )

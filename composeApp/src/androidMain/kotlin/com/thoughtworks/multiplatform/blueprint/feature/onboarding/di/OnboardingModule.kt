@@ -1,6 +1,10 @@
 package com.thoughtworks.multiplatform.blueprint.feature.onboarding.di
 
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.storage
 import com.russhwolf.settings.Settings
+import com.thoughtworks.multiplatform.blueprint.feature.onboarding.data.FirebaseClientOnboarding
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.presentation.OnboardingViewModel
 import feature.onboarding.data.DefaultClientOnboarding
 import feature.onboarding.data.RemoteClientOnboarding
@@ -29,7 +33,7 @@ val onboardingModule = module {
     }
 
     single<ClientOnboarding>(named("remote")) {
-        RemoteClientOnboarding()
+        FirebaseClientOnboarding(Firebase.storage)
     }
 
     single<ClientOnboarding>(named("default")) {
