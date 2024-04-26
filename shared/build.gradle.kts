@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.DeprecatedTargetPresetApi
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -33,9 +34,15 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.coroutines.core)
+            implementation("com.russhwolf:multiplatform-settings-serialization:1.1.1")
+            implementation("com.russhwolf:multiplatform-settings:1.1.1")
+            api("com.russhwolf:multiplatform-settings-no-arg:1.1.1")
+            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1-Beta")
+
         }
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
