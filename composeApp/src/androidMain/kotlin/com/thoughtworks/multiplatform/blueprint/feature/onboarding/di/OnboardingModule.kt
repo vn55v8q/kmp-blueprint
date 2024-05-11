@@ -1,13 +1,8 @@
 package com.thoughtworks.multiplatform.blueprint.feature.onboarding.di
 
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import com.google.firebase.storage.storage
-import com.russhwolf.settings.Settings
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.data.FirebaseClientOnboarding
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.presentation.OnboardingViewModel
 import feature.onboarding.data.DefaultClientOnboarding
-import feature.onboarding.data.RemoteClientOnboarding
 import feature.onboarding.data.SharedOnboardingStore
 import feature.onboarding.domain.*
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -20,10 +15,6 @@ val onboardingModule = module {
         OnboardingViewModel(get(), get())
     }
 
-    single<Settings> {
-        Settings()
-    }
-
     single<OnboardingStorage> {
         SharedOnboardingStore(get())
     }
@@ -33,7 +24,7 @@ val onboardingModule = module {
     }
 
     single<ClientOnboarding>(named("remote")) {
-        FirebaseClientOnboarding(Firebase.storage)
+        FirebaseClientOnboarding(get())
     }
 
     single<ClientOnboarding>(named("default")) {

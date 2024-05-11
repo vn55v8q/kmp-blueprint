@@ -8,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.AccountViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.account.ui.AccountScreen
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.presentation.OnboardingViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.ui.OnboardingScreen
 import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashViewModel
@@ -17,10 +19,11 @@ import com.thoughtworks.multiplatform.blueprint.feature.splash.ui.SplashScreen
 fun BlueprintNavigation(
     splashViewModel: SplashViewModel,
     onboardingViewModel: OnboardingViewModel,
+    accountViewModel: AccountViewModel,
     onFinish: () -> Unit
 ) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "splash") {
+    NavHost(navController = navController, startDestination = "account") {
         composable("splash") {
             val state = splashViewModel.state.collectAsState()
             SplashScreen(
@@ -39,6 +42,14 @@ fun BlueprintNavigation(
             OnboardingScreen(
                 state = state.value,
                 onFinish = onFinish
+            )
+        }
+        composable("account") {
+            val state = accountViewModel.state.collectAsState()
+            AccountScreen(
+                modifier = Modifier.fillMaxSize(),
+                state = state.value,
+                onChangeName = accountViewModel::processName
             )
         }
         // Add more destinations similarly.

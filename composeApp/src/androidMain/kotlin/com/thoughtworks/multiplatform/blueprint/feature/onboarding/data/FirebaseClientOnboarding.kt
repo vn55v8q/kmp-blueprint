@@ -13,7 +13,7 @@ class FirebaseClientOnboarding(
 
     override suspend fun get(): Onboarding {
         val storageRef = storage.reference
-        val imagesRef: StorageReference = storageRef.child("images/onboarding")
+        val imagesRef: StorageReference = storageRef.child("images/onboarding/scene")
         val pages = mutableListOf<PageOnboarding>()
         try {
             val listResult = imagesRef.listAll().await()

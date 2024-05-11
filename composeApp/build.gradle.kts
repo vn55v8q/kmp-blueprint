@@ -70,10 +70,11 @@ android {
         implementation(libs.koin.core)
         implementation(libs.koin.android)
         implementation(libs.kotlinx.coroutines.android)
-        implementation("androidx.navigation:navigation-compose:2.7.7")
-        implementation("io.coil-kt:coil-compose:2.6.0")
-        implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
-        implementation("com.google.firebase:firebase-storage")
+        implementation(libs.androidx.navigation.compose)
+        implementation(libs.coil.compose)
+        implementation(platform(libs.firebase.bom))
+        implementation(libs.firebase.storage)
+        implementation(libs.firebase.firestore.ktx)
     }
 
     flavorDimensions += "flavor"
