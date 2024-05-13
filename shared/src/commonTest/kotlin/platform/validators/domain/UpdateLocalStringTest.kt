@@ -47,6 +47,12 @@ class FakeBlackListClient(
 
 ) : BlackListClient<String> {
     constructor(list: List<String>) : this("FakeList", 0, list.toMutableList())
+
+    override suspend fun syncAndGetVersion(): Int {
+        return version
+    }
+
+    override suspend fun syncData() {}
 }
 
 class FakeBlackListCacheClient(
@@ -55,4 +61,10 @@ class FakeBlackListCacheClient(
     override var mutablaList: MutableList<String> = mutableListOf()
 ) : BlackListCacheClient<String> {
     constructor(list: List<String>) : this("FakeList", 0, list.toMutableList())
+
+    override suspend fun syncAndGetVersion(): Int {
+        return version
+    }
+
+    override suspend fun syncData() {}
 }

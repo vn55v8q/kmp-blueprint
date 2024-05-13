@@ -47,11 +47,27 @@ fun BlueprintNavigation(
         composable("account") {
             val state = accountViewModel.state.collectAsState()
             AccountScreen(
-                modifier = Modifier.fillMaxSize(),
                 state = state.value,
-                onChangeName = accountViewModel::processName
+                onUserClick = { newUser ->
+                    accountViewModel.processUser(newUser)
+                },
+                onNameClick = { newName ->
+                    accountViewModel.processName(newName)
+                },
+                onEmailClick = { newEmail ->
+                    accountViewModel.processEmail(newEmail)
+                },
+                onPasswordClick = { newPass ->
+                    accountViewModel.processPass(newPass)
+                },
+                onHideSnackbar = {
+                    accountViewModel.clearErrorMessage()
+                },
+                onLastStepClick = {
+                    accountViewModel.onLastStepProcess()
+                },
+                onCloseScreen = onFinish
             )
         }
-        // Add more destinations similarly.
     }
 } 

@@ -2,8 +2,8 @@ package platform.validators.data
 
 import platform.validators.domain.BlackListCacheClient
 
-class LocalNameBlackListCache : BlackListCacheClient<String> {
-    override val id: String = "local-name-client"
+class LocalDomainBlackListCache : BlackListCacheClient<String> {
+    override val id: String = "local-domain-client"
     override var version: Int = 0
     override var mutablaList: MutableList<String> = mutableListOf()
     override suspend fun syncAndGetVersion(): Int {

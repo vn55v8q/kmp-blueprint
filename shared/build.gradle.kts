@@ -26,6 +26,7 @@ kotlin {
     }
     
     sourceSets {
+        //noinspection UseTomlInstead
         commonMain.dependencies {
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
@@ -38,7 +39,7 @@ kotlin {
             api("com.russhwolf:multiplatform-settings-no-arg:1.1.1")
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-
+            api("io.github.aakira:napier:2.7.1")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

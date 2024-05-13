@@ -12,7 +12,7 @@ class ParseEmailToEntityTest {
     @Test
     fun givenToAnEmailWithUnderscoreName_whenCallParseEmailToEntity_thenReturnEmailValue() {
         val email = "harttyn_arce@hotmail.com"
-        val emailEntity = sut.parseEmail(email)
+        val emailEntity = sut.parse(email)
         assertEquals(
             emailEntity.name, "harttyn_arce"
         )
@@ -27,7 +27,7 @@ class ParseEmailToEntityTest {
     @Test
     fun givenToAnEmailWithDotName_whenCallParseEmailToEntity_thenReturnEmailValue() {
         val email = "harttyn.arce@hotmail.com"
-        val emailEntity = sut.parseEmail(email)
+        val emailEntity = sut.parse(email)
         assertEquals(
             emailEntity.name, "harttyn.arce"
         )
@@ -42,7 +42,7 @@ class ParseEmailToEntityTest {
     @Test
     fun givenToAnEmailWithDotNameEdgeCase_whenCallParseEmailToEntity_thenReturnEmailValue() {
         val email = "harttyn.andres.arce.gajardo@hotmail.com"
-        val emailEntity = sut.parseEmail(email)
+        val emailEntity = sut.parse(email)
         assertEquals(
             emailEntity.name, "harttyn.andres.arce.gajardo"
         )
@@ -57,7 +57,7 @@ class ParseEmailToEntityTest {
     @Test
     fun givenToAnEmailWithHyphenName_whenCallParseEmailToEntity_thenReturnEmailValue() {
         val email = "harttyn-arce@gmail.com"
-        val emailEntity = sut.parseEmail(email)
+        val emailEntity = sut.parse(email)
         assertEquals(
             emailEntity.name, "harttyn-arce"
         )
@@ -72,7 +72,7 @@ class ParseEmailToEntityTest {
     @Test
     fun givenToAnEmailWithHyphenNameEdgeCase_whenCallParseEmailToEntity_thenReturnEmailValue() {
         val email = "harttyn1-andres1-arce2-gajardo3@gmail.com.co"
-        val emailEntity = sut.parseEmail(email)
+        val emailEntity = sut.parse(email)
         assertEquals(
             emailEntity.name, "harttyn1-andres1-arce2-gajardo3"
         )
@@ -87,21 +87,21 @@ class ParseEmailToEntityTest {
     @Test
     fun givenToAnEmailWithErrorFormat_whenCallParseEmailToEntity_thenThrowEmailFormatException() {
         assertFailsWith<EmailFormatException> {
-            sut.parseEmail("harttyn@arce@gmail.com")
+            sut.parse("harttyn@arce@gmail.com")
         }
         assertFailsWith<EmailFormatException> {
-            sut.parseEmail("harttyn.arce@gmail.com.com.co")
+            sut.parse("harttyn.arce@gmail.com.com.co")
         }
         assertFailsWith<EmailFormatException> {
-            sut.parseEmail("harttyn .arce@gmail.com.com.co")
-        }
-
-        assertFailsWith<EmailFormatException> {
-            sut.parseEmail("harttyn.arce/gmail.com.com.co")
+            sut.parse("harttyn .arce@gmail.com.com.co")
         }
 
         assertFailsWith<EmailFormatException> {
-            sut.parseEmail("harttyn/arce@gmail.com.com.co")
+            sut.parse("harttyn.arce/gmail.com.com.co")
+        }
+
+        assertFailsWith<EmailFormatException> {
+            sut.parse("harttyn/arce@gmail.com.com.co")
         }
     }
 

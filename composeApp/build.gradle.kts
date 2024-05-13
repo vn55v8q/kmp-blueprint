@@ -64,6 +64,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    //noinspection UseTomlInstead
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
         implementation(platform(libs.koin.bom))
@@ -74,7 +75,10 @@ android {
         implementation(libs.coil.compose)
         implementation(platform(libs.firebase.bom))
         implementation(libs.firebase.storage)
+        implementation(libs.firebase.auth)
         implementation(libs.firebase.firestore.ktx)
+        implementation("androidx.compose.material3:material3:1.3.0-alpha06")
+        implementation("androidx.compose.material:material-icons-extended:1.6.7")
     }
 
     flavorDimensions += "flavor"

@@ -5,7 +5,6 @@ class IsInvalidEmailDomain(
     private val local: BlackListCacheClient<String>
 ) {
     suspend fun invoke(emailDomain: String): Boolean {
-        emailDomainUpdateLocalString.invoke()
         return local.existsValueInBlackList(emailDomain)
     }
 }
