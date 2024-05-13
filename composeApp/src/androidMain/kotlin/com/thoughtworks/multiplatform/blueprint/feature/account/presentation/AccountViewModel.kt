@@ -37,32 +37,47 @@ class AccountViewModel(
     }
 
     private val sessionState = MutableStateFlow(NewUser.default())
+    private val emailBlackListState = MutableStateFlow(mutableListOf<String>())
     private val mutableStateFlow = MutableStateFlow(AccountState.default())
     val state = mutableStateFlow.asStateFlow()
 
     fun processEmail(email: String) {
         viewModelScope.launch {
             try {
-                val isInvalidEmail = isInvalidEmail.invoke(email)
-                Log.d("AccountViewModel", "isValidMail $isInvalidEmail")
-                if (isInvalidEmail) {
+                Log.d("AccountViewModel", "email : $email")
+                val existEmailRegistered = emailBlackListState.value.filter { emailItem ->
+                    emailItem == email
+                }.isNotEmpty()
+                if (existEmailRegistered) {
                     mutableStateFlow.update {
                         it.copy(
                             isValidEmail = false,
-                            errorMessage = "Este correo no es permitido",
+                            errorMessage = "Este correo ya existe, recupera contraseña o utiliza otro email",
                             currentStep = 0
                         )
                     }
                 } else {
-                    sessionState.update {
-                        it.copy(
-                            email = email
-                        )
-                    }
-                    mutableStateFlow.update {
-                        it.copy(
-                            isValidEmail = true, errorMessage = null, currentStep = 1
-                        )
+                    val isInvalidEmail = isInvalidEmail.invoke(email)
+                    Log.d("AccountViewModel", "isValidMail $isInvalidEmail")
+                    if (isInvalidEmail) {
+                        mutableStateFlow.update {
+                            it.copy(
+                                isValidEmail = false,
+                                errorMessage = "Este correo no es permitido",
+                                currentStep = 0
+                            )
+                        }
+                    } else {
+                        sessionState.update {
+                            it.copy(
+                                email = email
+                            )
+                        }
+                        mutableStateFlow.update {
+                            it.copy(
+                                isValidEmail = true, errorMessage = null, currentStep = 1
+                            )
+                        }
                     }
                 }
             } catch (name: NameInBlackListException) {
@@ -191,6 +206,7 @@ class AccountViewModel(
                     }
                 }
             } catch (e: EmailAddressIsAlreadyInUseException) {
+                emailBlackListState.value.add(sessionState.value.email)
                 mutableStateFlow.update {
                     it.copy(
                         isLoading = false,

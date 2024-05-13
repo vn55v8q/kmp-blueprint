@@ -58,6 +58,7 @@ android {
         }
     }
     buildFeatures {
+        compose = true
         buildConfig = true
     }
     compileOptions {
@@ -67,6 +68,7 @@ android {
     //noinspection UseTomlInstead
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
+        implementation(libs.androidx.core.ktx)
         implementation(platform(libs.koin.bom))
         implementation(libs.koin.core)
         implementation(libs.koin.android)
