@@ -57,6 +57,9 @@ android {
             isMinifyEnabled = false
         }
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.7"
+    }
     buildFeatures {
         compose = true
         buildConfig = true

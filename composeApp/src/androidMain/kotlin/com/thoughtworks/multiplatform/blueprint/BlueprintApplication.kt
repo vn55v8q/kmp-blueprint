@@ -2,6 +2,7 @@ package com.thoughtworks.multiplatform.blueprint
 
 import android.app.Application
 import com.thoughtworks.multiplatform.blueprint.feature.account.di.accountModule
+import com.thoughtworks.multiplatform.blueprint.feature.account.di.loginModule
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.di.onboardingModule
 import com.thoughtworks.multiplatform.blueprint.feature.splash.di.splashModule
 import com.thoughtworks.multiplatform.blueprint.platform.di.applicationModule
@@ -23,7 +24,8 @@ class BlueprintApplication : Application() {
                 applicationModule,
                 onboardingModule,
                 splashModule,
-                accountModule
+                accountModule,
+                loginModule
             )
         }
     }

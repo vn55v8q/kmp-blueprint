@@ -3,6 +3,7 @@ package com.thoughtworks.multiplatform.blueprint.feature.account.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import feature.account.domain.EmailAddressIsAlreadyInUseException
+import feature.account.domain.LoginUser
 import feature.account.domain.NewUser
 import feature.account.domain.RegisterUser
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import platform.log.Log
-import platform.validators.domain.IsInvalidEmail
+import platform.validators.domain.IsInvalidEmailForRegister
 import platform.validators.domain.IsInvalidName
 import platform.validators.domain.IsInvalidPassword
 import platform.validators.domain.UpdateLocalString
@@ -23,9 +24,10 @@ class AccountViewModel(
     private val domainUpdateLocalString: UpdateLocalString,
     private val dotComUpdateLocalString: UpdateLocalString,
     private val isInvalidName: IsInvalidName,
-    private val isInvalidEmail: IsInvalidEmail,
+    private val isInvalidEmailForRegister: IsInvalidEmailForRegister,
     private val isInvalidPassword: IsInvalidPassword,
-    private val registerUser: RegisterUser
+    private val registerUser: RegisterUser,
+    private val loginUser: LoginUser
 ) : ViewModel() {
 
     init {
@@ -57,7 +59,7 @@ class AccountViewModel(
                         )
                     }
                 } else {
-                    val isInvalidEmail = isInvalidEmail.invoke(email)
+                    val isInvalidEmail = isInvalidEmailForRegister.invoke(email)
                     Log.d("AccountViewModel", "isValidMail $isInvalidEmail")
                     if (isInvalidEmail) {
                         mutableStateFlow.update {
@@ -117,8 +119,7 @@ class AccountViewModel(
             if (isInvalidName) {
                 mutableStateFlow.update {
                     it.copy(
-                        isValidUser = false,
-                        errorMessage = "El nombre no corresponde"
+                        isValidUser = false, errorMessage = "El nombre no corresponde"
                     )
                 }
             } else {
@@ -129,9 +130,7 @@ class AccountViewModel(
                 }
                 mutableStateFlow.update {
                     it.copy(
-                        isValidUser = true,
-                        errorMessage = "",
-                        currentStep = 3
+                        isValidUser = true, errorMessage = "", currentStep = 3
                     )
                 }
             }
@@ -145,8 +144,7 @@ class AccountViewModel(
             if (isInvalidName) {
                 mutableStateFlow.update {
                     it.copy(
-                        isValidName = false,
-                        errorMessage = "El nombre no es permitido"
+                        isValidName = false, errorMessage = "El nombre no es permitido"
                     )
                 }
             } else {
@@ -157,9 +155,7 @@ class AccountViewModel(
                 }
                 mutableStateFlow.update {
                     it.copy(
-                        isValidName = true,
-                        currentStep = 2,
-                        errorMessage = ""
+                        isValidName = true, currentStep = 2, errorMessage = ""
                     )
                 }
             }
@@ -209,10 +205,50 @@ class AccountViewModel(
                 emailBlackListState.value.add(sessionState.value.email)
                 mutableStateFlow.update {
                     it.copy(
-                        isLoading = false,
-                        errorMessage = e.message,
-                        currentStep = 0
+                        isLoading = false, errorMessage = null, currentStep = 4
                     )
+                }
+            }
+        }
+    }
+
+    fun emailLoginConfirm() {
+        mutableStateFlow.update {
+            it.copy(
+                isLoading = false, errorMessage = null, currentStep = 5
+            )
+        }
+    }
+
+    fun passwordLoginConfirm(password: String) {
+        viewModelScope.launch {
+            Log.d("FirebaseUserClient", "passwordLoginConfirm on ViewModel : $password")
+            val isInvalidPassword = isInvalidPassword.invoke(password)
+            Log.d("FirebaseUserClient", "isInvalidPassword : $isInvalidPassword")
+            if (isInvalidPassword) {
+                mutableStateFlow.update {
+                    it.copy(
+                        isValidPassword = false,
+                        errorMessage = "Debe contener 6 caracteres como minimo"
+                    )
+                }
+            } else {
+                val isLoginSuccess = loginUser.invoke(sessionState.value.email, password)
+                Log.d("FirebaseUserClient", "isLoginSuccess : $isLoginSuccess")
+                if (isLoginSuccess) {
+                    mutableStateFlow.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Login OK de pana",
+                        )
+                    }
+                } else {
+                    mutableStateFlow.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Login error de perro",
+                        )
+                    }
                 }
             }
         }
@@ -240,25 +276,3 @@ class AccountViewModel(
 
 }
 
-data class AccountState(
-    val isLoading: Boolean,
-    val currentStep: Int,
-    val isValidName: Boolean,
-    val isValidUser: Boolean,
-    val isValidEmail: Boolean,
-    val isValidPassword: Boolean,
-    val isCreateUser: Boolean,
-    val errorMessage: String? = null
-) {
-    companion object {
-        fun default() = AccountState(
-            isLoading = false,
-            currentStep = 0,
-            isValidName = false,
-            isValidUser = false,
-            isValidEmail = false,
-            isValidPassword = false,
-            isCreateUser = false
-        )
-    }
-}

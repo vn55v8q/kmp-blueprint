@@ -11,6 +11,7 @@ import feature.account.domain.NewUser
 import feature.account.domain.UrlReference
 import feature.account.domain.UserClient
 import kotlinx.coroutines.tasks.await
+import platform.log.Log
 
 class FirebaseUserClient(
     private val firebaseAuth: FirebaseAuth, private val firestore: FirebaseFirestore
@@ -29,10 +30,7 @@ class FirebaseUserClient(
             val userId = firebaseAuth.currentUser?.uid.orEmpty()
             with(newUser) {
                 val userModel = RegisterUserModel(
-                    name = name,
-                    user = user,
-                    email = email,
-                    age = age
+                    name = name, user = user, email = email, age = age
                 )
                 userRef.document(userId).set(userModel).await()
                 return true
@@ -46,6 +44,27 @@ class FirebaseUserClient(
 
     override suspend fun uploadImage(imageReference: ImageReference): UrlReference {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun loginUser(email: String, password: String): Boolean {
+        try {
+            Log.d(
+                "FirebaseUserClient",
+                "email: $email}, password $password"
+            )
+            firebaseAuth.signInWithEmailAndPassword(email, password).await()
+            val currentUser = firebaseAuth.currentUser
+            Log.d(
+                "FirebaseUserClient",
+                "currentUser: ${currentUser?.email}, ${currentUser?.uid}, ${currentUser?.displayName}"
+            )
+            return currentUser?.uid.orEmpty().isNotEmpty()
+        } catch (e: Exception) {
+            Log.d(
+                "FirebaseUserClient", "error: $e"
+            )
+            return false
+        }
     }
 
     private fun saveNameInFirebaseAuth(currentUser: FirebaseUser?, name: String) {

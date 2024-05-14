@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.button.SimpleButton
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.PaswordEditText
@@ -17,7 +18,11 @@ fun PasswordStepComponent(
     onPasswordChange: (String) -> Unit,
     onConfirmPassword: () -> Unit
 ) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.Center) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         PaswordEditText(
             modifier = Modifier.fillMaxWidth(),
             value = password,

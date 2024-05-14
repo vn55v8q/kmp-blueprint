@@ -37,7 +37,7 @@ fun PaswordEditText(
         readOnly = false,
         textStyle = LocalTextStyle.current,
         label = {
-            Text("Usuario")
+            Text("Contraseña")
         },
         placeholder = { Text("ej: hardroid98") },
         leadingIcon = null,

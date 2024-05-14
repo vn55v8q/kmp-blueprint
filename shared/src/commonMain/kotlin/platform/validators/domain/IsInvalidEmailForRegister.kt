@@ -6,7 +6,7 @@ import platform.validators.domain.exception.EmailDomainInBlacklistException
 import platform.validators.domain.exception.EmailFormatException
 import platform.validators.domain.exception.NameInBlackListException
 
-class IsInvalidEmail(
+class IsInvalidEmailForRegister(
     private val parseEmailToEntity: ParseEmailToEntity,
     private val isInvalidName: IsInvalidName,
     private val isInvalidDomain: IsInvalidEmailDomain,
