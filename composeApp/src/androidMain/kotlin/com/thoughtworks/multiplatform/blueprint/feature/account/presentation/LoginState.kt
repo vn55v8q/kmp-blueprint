@@ -10,6 +10,7 @@ data class LoginState(
     val currentStep: Int,
     val isValidEmail: Boolean,
     val isValidPassword: Boolean,
+    val isLoggedUser: Boolean,
     val errorMessage: String? = null
 ) {
     companion object {
@@ -21,6 +22,7 @@ data class LoginState(
             isValidEmail = false,
             passwordStrength = PasswordStrength.EMPTY,
             isValidPassword = false,
+            isLoggedUser = false
         )
     }
 }

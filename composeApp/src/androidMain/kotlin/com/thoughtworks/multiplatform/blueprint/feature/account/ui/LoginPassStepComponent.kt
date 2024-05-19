@@ -9,11 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.button.SimpleButton
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.PaswordEditText
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.button.LoadingButton
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.PasswordEditText
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.spacer.MediumSpacer
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.BodySmallText
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.TitleLargeText
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.TitleSmallText
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.AppTheme
@@ -23,7 +26,9 @@ fun LoginPassStepComponent(
     modifier: Modifier,
     password: String,
     isEnabled: Boolean = true,
+    isLoading: Boolean = false,
     isValid: Boolean,
+    errorMessage: String,
     onPasswordChange: (String) -> Unit,
     onConfirmPassword: () -> Unit,
     onClickPasswordRecovery: () -> Unit
@@ -36,13 +41,21 @@ fun LoginPassStepComponent(
         TitleLargeText(text = "Introduce la contraseña")
         MediumSpacer()
         MediumSpacer()
-        PaswordEditText(
+        PasswordEditText(
             modifier = Modifier.fillMaxWidth(),
             value = password,
             isEnabled = isEnabled,
             isError = isValid.not(),
             onValueChange = onPasswordChange
         )
+        if (isValid.not() && errorMessage.isNotEmpty()){
+            BodySmallText(
+                text = errorMessage,
+                color = Color.Red,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Start
+            )
+        }
         MediumSpacer()
         TitleSmallText(
             modifier = Modifier.clickable {
@@ -52,9 +65,10 @@ fun LoginPassStepComponent(
         )
         MediumSpacer()
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            SimpleButton(
-                modifier = Modifier.fillMaxWidth(),
+            LoadingButton(
+                modifier = Modifier,
                 text = "Iniciar sesión",
+                isLoading = isLoading,
                 isEnabled = true,
                 onClick = onConfirmPassword
             )
@@ -68,6 +82,7 @@ private fun LoginPassStepComponentPreview() {
     AppTheme {
         LoginPassStepComponent(modifier = Modifier,
             password = "harttyn.arce@gmail.com",
+            errorMessage = "This is a error",
             isEnabled = true,
             isValid = true,
             onPasswordChange = {},

@@ -11,18 +11,20 @@ data class AccountState(
     val isValidPassword: Boolean,
     val passwordStrength: PasswordStrength,
     val isCreateUser: Boolean,
+    val isLoggedUser: Boolean,
     val message: String? = null
 ) {
     companion object {
         fun default() = AccountState(
             isLoading = false,
-            currentStep = 1,
+            currentStep = 0,
             isValidName = false,
             isValidUser = false,
             isValidEmail = false,
             passwordStrength = PasswordStrength.EMPTY,
             isValidPassword = false,
-            isCreateUser = false
+            isCreateUser = false,
+            isLoggedUser = false,
         )
     }
 }

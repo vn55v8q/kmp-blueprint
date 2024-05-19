@@ -72,25 +72,32 @@ class LoginViewModel(
     fun requestLogin() {
         viewModelScope.launch {
             try {
-                if (loginUser.invoke(state.value.email, state.value.password)) {
+                val isValidCredentials = loginUser.invoke(state.value.email, state.value.password)
+                if (isValidCredentials) {
                     mutableStateFlow.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = "User loged de pana",
+                            isValidPassword = true,
+                            isLoggedUser = true,
+                            errorMessage = "",
                         )
                     }
                 } else {
                     mutableStateFlow.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = "User loged de perro",
+                            isValidPassword = false,
+                            isLoggedUser = false,
+                            errorMessage = "Contraseña incorrecta",
                         )
                     }
                 }
             } catch (e: Exception) {
                 mutableStateFlow.update {
                     it.copy(
-                        isLoading = false, errorMessage = e.message.orEmpty(), currentStep = 4
+                        isLoading = false,
+                        errorMessage = e.message.orEmpty(),
+                        currentStep = 4
                     )
                 }
             }

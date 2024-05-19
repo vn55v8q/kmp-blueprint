@@ -2,16 +2,12 @@ package com.thoughtworks.multiplatform.blueprint.feature.account.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,17 +29,29 @@ fun RegisterScreen(
     onEmailClick: (String) -> Unit,
     onPasswordClick: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    onHideSnackbar: () -> Unit,
     onLastStepClick: () -> Unit,
     onLoginEmailClick: () -> Unit,
     onLoginPasswordClick: (String) -> Unit,
-    onClickPasswordRecovery: () -> Unit
+    onClickPasswordRecovery: () -> Unit,
+    goToHomeScreen: () -> Unit
 ) {
-    var user by remember { mutableStateOf("Hardroid") }
+    var user by remember { mutableStateOf("Hardroid98") }
     var name by remember { mutableStateOf("Harttyn") }
-    var email by remember { mutableStateOf("harry.arce@gmail.com") }
-    var pass by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("harttyn.arce@gmail.com") }
+    var pass by remember { mutableStateOf("Bpkeyts.1234$") }
     val pagerState = rememberPagerState(pageCount = { 6 })
+
+    LaunchedEffect(key1 = state.isCreateUser) {
+        if(state.isCreateUser){
+            goToHomeScreen()
+        }
+    }
+
+    LaunchedEffect(key1 = state.isLoggedUser) {
+        if(state.isLoggedUser){
+            goToHomeScreen()
+        }
+    }
 
     Scaffold(modifier = Modifier.fillMaxSize(), topBar = {
         Toolbar(
@@ -110,6 +118,7 @@ fun RegisterScreen(
                         PasswordStepComponent(modifier = Modifier.fillMaxWidth(),
                             password = pass,
                             isValid = state.isValidPassword,
+                            isLoading = state.isLoading,
                             passwordStrength = state.passwordStrength,
                             onPasswordChange = { newPass ->
                                 pass = newPass
@@ -136,9 +145,11 @@ fun RegisterScreen(
 
                     5 -> {
                         LoginPassStepComponent(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier,
                             password = pass,
                             isValid = state.isValidPassword,
+                            isLoading = state.isLoading,
+                            errorMessage = state.message.orEmpty(),
                             onPasswordChange = { newPass ->
                                 pass = newPass
                             },

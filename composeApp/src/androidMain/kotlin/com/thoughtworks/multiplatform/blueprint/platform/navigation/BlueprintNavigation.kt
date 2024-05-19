@@ -1,6 +1,7 @@
 package com.thoughtworks.multiplatform.blueprint.platform.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -28,13 +29,18 @@ fun BlueprintNavigation(
     onFinish: () -> Unit
 ) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "register") {
+    NavHost(navController = navController, startDestination = "splash") {
         composable("splash") {
             val state = splashViewModel.state.collectAsState()
-            SplashScreen(modifier = Modifier.fillMaxSize(),
+            SplashScreen(
+                modifier = Modifier.fillMaxSize(),
                 state = state.value,
                 onNavigateToOnboarding = {
-                    navController.navigate("onboarding")
+                    navController.navigate("onboarding") {
+                        popUpTo("splash") {
+                            inclusive = true
+                        }
+                    }
                 })
         }
         composable("onboarding") {
@@ -42,19 +48,20 @@ fun BlueprintNavigation(
                 onboardingViewModel.fetch()
             }
             val state = onboardingViewModel.state.collectAsState()
-            OnboardingScreen(
-                state = state.value, onFinish = onFinish
-            )
+            OnboardingScreen(state = state.value, onFinish = {
+                navController.navigate("account") {
+                    popUpTo("onboarding") {
+                        inclusive = true
+                    }
+                }
+            })
         }
         composable("account") {
-            AccountScreen(
-                modifier = Modifier.fillMaxSize(),
-                onClickLogin = {
-                    navController.navigate("login")
-                }, onClickRegister = {
-                    navController.navigate("register")
-                }
-            )
+            AccountScreen(modifier = Modifier.fillMaxSize(), onClickLogin = {
+                navController.navigate("login")
+            }, onClickRegister = {
+                navController.navigate("register")
+            })
         }
         composable("register") {
             val state = accountViewModel.state.collectAsState()
@@ -78,9 +85,6 @@ fun BlueprintNavigation(
                 onPasswordChange = { newPass ->
                     accountViewModel.processPass(newPass)
                 },
-                onHideSnackbar = {
-                    accountViewModel.clearErrorMessage()
-                },
                 onLastStepClick = {
                     accountViewModel.onLastStepProcess()
                 },
@@ -91,27 +95,41 @@ fun BlueprintNavigation(
                     accountViewModel.passwordLoginConfirm(password)
                 },
                 onClickPasswordRecovery = {},
+                goToHomeScreen = {
+                    navController.navigate("home") {
+                        popUpTo("account") {
+                            inclusive = true
+                        }
+                    }
+                }
             )
         }
         composable("login") {
             val state by loginViewModel.state.collectAsState()
-            LoginScreen(
-                state = state,
-                onEmailClick = { email ->
-                    loginViewModel.processEmail(email)
+            LoginScreen(state = state, onEmailClick = { email ->
+                loginViewModel.processEmail(email)
+            }, onPasswordClick = { password ->
+                loginViewModel.processPass(password)
+            }, onLastStepClick = {
+                loginViewModel.onLastStepProcess()
+            }, onCloseScreen = onFinish,
+                goToHomeScreen = {
+                    navController.navigate("home") {
+                        popUpTo("account") {
+                            inclusive = true
+                        }
+                    }
                 },
-                onPasswordClick = { password ->
-                    loginViewModel.processPass(password)
-                },
-                onHideSnackbar = {
-                    loginViewModel.clearErrorMessage()
-                },
-                onLastStepClick = {
-                    loginViewModel.onLastStepProcess()
-                },
-                onCloseScreen = onFinish,
-                onClickPasswordRecovery = {}
+                onPasswordRecovery = {
+                    navController.navigate("recovery-password")
+                }
             )
+        }
+        composable("home") {
+            Text(text = "TODO: Home")
+        }
+        composable("recovery-password") {
+            Text(text = "TODO: Recovery Screen")
         }
     }
 } 

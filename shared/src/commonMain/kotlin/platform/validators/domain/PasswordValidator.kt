@@ -13,14 +13,15 @@ class PasswordValidator {
         val hasUpperCase = password.any { it.isUpperCase() }
         val hasDigit = password.any { it.isDigit() }
         val hasSpecialChar = password.any { !it.isLetterOrDigit() }
+        val isLongPassword = password.length > 12
         val strengthPoints =
-            listOf(hasLowerCase, hasUpperCase, hasDigit, hasSpecialChar).count { it }
+            listOf(hasLowerCase, hasUpperCase, hasDigit, hasSpecialChar, isLongPassword).count { it }
 
         return when (strengthPoints) {
-            0 -> PasswordStrength.COMMON
-            1, 2 -> PasswordStrength.GOOD
-            3, 4 -> PasswordStrength.EXCELLENT
-            else -> PasswordStrength.COMMON
+            0 -> PasswordStrength.INSUFFICIENT
+            1, 2 -> PasswordStrength.COMMON
+            3, 4  -> PasswordStrength.GOOD
+            else -> PasswordStrength.EXCELLENT
         }
     }
 }

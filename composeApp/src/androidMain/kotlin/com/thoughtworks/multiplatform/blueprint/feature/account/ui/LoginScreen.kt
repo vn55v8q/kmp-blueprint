@@ -8,9 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,36 +16,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.AccountState
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.LoginState
 import platform.log.Log
 
 @Composable
 fun LoginScreen(
     state: LoginState,
-    onHideSnackbar: () -> Unit,
     onLastStepClick: () -> Unit,
     onCloseScreen: () -> Unit,
     onEmailClick: (String) -> Unit,
     onPasswordClick: (String) -> Unit,
-    onClickPasswordRecovery: () -> Unit
+    onPasswordRecovery: () -> Unit,
+    goToHomeScreen: () -> Unit
 ) {
-    var email by remember { mutableStateOf("harttin.arce@gmail.com") }
-    var pass by remember { mutableStateOf("123456") }
+    var email by remember { mutableStateOf("harttyn.arce@gmail.com") }
+    var pass by remember { mutableStateOf("Bpkeyts.1234$") }
     val pagerState = rememberPagerState(pageCount = { 2 })
-    val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(state.errorMessage) {
-        val message = state.errorMessage.orEmpty()
-        if (message.isNotEmpty()) {
-            val reference = snackbarHostState.showSnackbar(
-                message = message,
-                withDismissAction = true,
-            )
-            when (reference) {
-                SnackbarResult.Dismissed -> onHideSnackbar()
-                SnackbarResult.ActionPerformed -> onHideSnackbar()
-            }
+    LaunchedEffect(key1 = state.isLoggedUser) {
+        if(state.isLoggedUser){
+            goToHomeScreen()
         }
     }
 
@@ -75,23 +62,39 @@ fun LoginScreen(
                     }
 
                     1 -> {
-                        PasswordStepComponent(modifier = Modifier.fillMaxWidth(),
+                        /*PasswordStepComponent(
+                            modifier = Modifier.fillMaxWidth(),
+                            showPasswordStrength = false,
                             password = pass,
                             isValid = state.isValidPassword,
+                            isLoading = state.isLoading,
                             passwordStrength = state.passwordStrength,
                             onPasswordChange = { newPass ->
                                 pass = newPass
                             },
                             onConfirmPassword = {
                                 onPasswordClick(pass)
-                            })
+                            })*/
+                        LoginPassStepComponent(
+                            modifier = Modifier,
+                            password = pass,
+                            isValid = state.isValidPassword,
+                            isLoading = state.isLoading,
+                            errorMessage = state.errorMessage.orEmpty(),
+                            onPasswordChange = { newPass ->
+                                pass = newPass
+                            },
+                            onConfirmPassword = {
+                                onPasswordClick(pass)
+                            },
+                            onClickPasswordRecovery = onPasswordRecovery
+                        )
                     }
 
                     else -> {
                         Log.d("AccountScreen", "Page not found")
                     }
                 }
-                SnackbarHost(snackbarHostState)
             }
 
         }

@@ -19,10 +19,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import platform.validators.domain.PasswordStrength
 
 @Composable
-fun PaswordEditText(
+fun PasswordEditText(
     modifier: Modifier,
     value: String,
     isEnabled: Boolean = true,

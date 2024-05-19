@@ -175,10 +175,17 @@ class AccountViewModel(
         }
     }
 
-    fun confirmPass(pass: String){
+    fun confirmPass(pass: String) {
         viewModelScope.launch {
             val passwordStrength = passwordValidator.invoke(pass)
-            updatePasswordState(passwordStrength)
+            mutableStateFlow.update {
+                it.copy(
+                    isLoading = true,
+                    isValidPassword = passwordStrength.isValid,
+                    passwordStrength = passwordStrength,
+                    message = passwordStrength.message
+                )
+            }
             sessionState.update {
                 it.copy(
                     password = pass
@@ -203,17 +210,12 @@ class AccountViewModel(
 
     fun createAccount() {
         viewModelScope.launch {
-            mutableStateFlow.update {
-                it.copy(
-                    isLoading = true,
-                    message = "Creating account",
-                )
-            }
             try {
                 if (registerUser.invoke(sessionState.value)) {
                     mutableStateFlow.update {
                         it.copy(
                             isLoading = false,
+                            isCreateUser = true,
                             message = "User create de pana",
                         )
                     }
@@ -238,39 +240,54 @@ class AccountViewModel(
     }
 
     fun passwordLoginConfirm(password: String) {
-        viewModelScope.launch {
-            val passwordStrength = passwordValidator.invoke(password)
-            updatePasswordState(passwordStrength)
-            if (passwordStrength.isValid) {
-                val isLoginSuccess = loginUser.invoke(sessionState.value.email, password)
-                Log.d("FirebaseUserClient", "isLoginSuccess : $isLoginSuccess")
-                if (isLoginSuccess) {
+        sessionState.update {
+            it.copy(
+                password = password
+            )
+        }
+        val passwordStrength = passwordValidator.invoke(password)
+        if (passwordStrength.isValid) {
+            mutableStateFlow.update {
+                it.copy(
+                    isLoading = true,
+                    isValidPassword = true,
+                    passwordStrength = passwordStrength,
+                    message = passwordStrength.message
+                )
+            }
+            viewModelScope.launch {
+                if (loginUser.invoke(sessionState.value.email, password)) {
                     mutableStateFlow.update {
                         it.copy(
                             isLoading = false,
-                            message = "Login OK de pana",
+                            isValidPassword = true,
+                            isLoggedUser = true,
+                            message = "",
                         )
                     }
-                    // TODO: Habilitar perfil con información de usuario
                 } else {
                     mutableStateFlow.update {
                         it.copy(
                             isLoading = false,
-                            message = "Login error de perro",
+                            isValidPassword = false,
+                            isLoggedUser = false,
+                            message = "Contraseña incorrecta",
                         )
                     }
-                    // TODO: Controlar los usuarios bloqueados por intentos erroneos, fomentar recuperar contraseña
                 }
+                // TODO: Controlar los usuarios bloqueados por intentos erroneos, fomentar recuperar contraseña
+            }
+        } else {
+            mutableStateFlow.update {
+                it.copy(
+                    isLoading = false,
+                    isValidPassword = false,
+                    passwordStrength = passwordStrength,
+                    message = passwordStrength.message
+                )
             }
         }
-    }
 
-    fun clearErrorMessage() {
-        mutableStateFlow.update {
-            it.copy(
-                message = null,
-            )
-        }
     }
 
     fun onLastStepProcess() {

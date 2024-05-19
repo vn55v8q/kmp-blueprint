@@ -33,9 +33,6 @@ fun LoginEmailStepComponent(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ) {
-        val message = remember {
-            "Escribe tu contraseña para iniciar sesión en tu cuenta"
-        }
         TitleLargeText(text = "Ya estás registrado/a")
         MediumSpacer()
         BodyMediumText(text =  "Escribe tu contraseña para iniciar sesión en tu cuenta")
