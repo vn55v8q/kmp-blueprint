@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import platform.validators.domain.PasswordStrength
 
 @Composable
 fun PaswordEditText(
@@ -39,7 +40,7 @@ fun PaswordEditText(
         label = {
             Text("Contraseña")
         },
-        placeholder = { Text("ej: hardroid98") },
+        placeholder = { Text("Introduce una contraseña") },
         leadingIcon = null,
         trailingIcon = {
             IconButton(onClick = { passwordHidden = !passwordHidden }) {

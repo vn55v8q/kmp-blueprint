@@ -67,6 +67,7 @@ fun LoginScreen(
                             modifier = Modifier.fillMaxWidth(),
                             email = email,
                             isValid = state.isValidEmail,
+                            errorMessage = state.errorMessage.orEmpty(),
                             onEmailChange = { newEmail ->
                                 email = newEmail
                             },
@@ -77,6 +78,7 @@ fun LoginScreen(
                         PasswordStepComponent(modifier = Modifier.fillMaxWidth(),
                             password = pass,
                             isValid = state.isValidPassword,
+                            passwordStrength = state.passwordStrength,
                             onPasswordChange = { newPass ->
                                 pass = newPass
                             },

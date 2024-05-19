@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import platform.validators.domain.IsInvalidEmailForLogin
-import platform.validators.domain.IsInvalidPassword
+import platform.validators.domain.PasswordValidator
 
 class LoginViewModel(
     private val isInvalidEmailForLogin: IsInvalidEmailForLogin,
-    private val isInvalidPassword: IsInvalidPassword,
+    private val passwordValidator: PasswordValidator,
     private val loginUser: LoginUser
 ) : ViewModel() {
 
@@ -44,16 +44,8 @@ class LoginViewModel(
 
     fun processPass(pass: String) {
         viewModelScope.launch {
-            val isInvalidPass = isInvalidPassword.invoke(pass)
-            if (isInvalidPass) {
-                mutableStateFlow.update {
-                    it.copy(
-                        isLoading = false,
-                        isValidPassword = false,
-                        errorMessage = "La contraseña no cumple con lo minimo de seguridad"
-                    )
-                }
-            } else {
+            val passwordStrength = passwordValidator.invoke(pass)
+            if (passwordStrength.isValid) {
                 mutableStateFlow.update {
                     it.copy(
                         password = pass,
@@ -63,6 +55,15 @@ class LoginViewModel(
                     )
                 }
                 requestLogin()
+            } else {
+                mutableStateFlow.update {
+                    it.copy(
+                        password = pass,
+                        isLoading = false,
+                        isValidPassword = false,
+                        errorMessage = passwordStrength.message
+                    )
+                }
             }
 
         }

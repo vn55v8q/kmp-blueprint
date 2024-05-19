@@ -16,6 +16,7 @@ fun EmailEditText(
     modifier: Modifier,
     value: String,
     isEnabled: Boolean,
+    errorMessage: String,
     isError: Boolean = false,
     onValueChange: (String) -> Unit
 ) {

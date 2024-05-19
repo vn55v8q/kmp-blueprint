@@ -20,7 +20,7 @@ import platform.validators.domain.IsInvalidEmailForRegister
 import platform.validators.domain.IsInvalidEmailDomain
 import platform.validators.domain.IsInvalidEmailDotCom
 import platform.validators.domain.IsInvalidName
-import platform.validators.domain.IsInvalidPassword
+import platform.validators.domain.PasswordValidator
 import platform.validators.domain.ParseEmailToEntity
 import platform.validators.domain.UpdateLocalString
 
@@ -126,7 +126,7 @@ val accountModule = module {
     }
     // End Dot Com
     single {
-        IsInvalidPassword()
+        PasswordValidator()
     }
 
     single {

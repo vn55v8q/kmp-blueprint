@@ -24,6 +24,7 @@ fun LoginEmailStepComponent(
     email: String,
     isEnabled: Boolean = true,
     isValid: Boolean,
+    errorMessage: String,
     onEmailChange: (String) -> Unit,
     onConfirmEmail: () -> Unit
 ) {
@@ -44,6 +45,7 @@ fun LoginEmailStepComponent(
             value = email,
             isEnabled = isEnabled,
             isError = isValid.not(),
+            errorMessage = errorMessage,
             onValueChange = onEmailChange
         )
         MediumSpacer()
@@ -63,6 +65,7 @@ fun LoginStepComponentPreview() {
             email = "harttyn.arce@gmail.com",
             isEnabled = true,
             isValid = true,
+            errorMessage = "",
             onEmailChange = {},
             onConfirmEmail = {})
     }

@@ -1,7 +1,9 @@
 package com.thoughtworks.multiplatform.blueprint.platform.designsystem.form
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,6 +20,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,39 +44,30 @@ fun Toolbar(
                     .height(48.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
-                Icon(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .padding(end = 8.dp),
-                    imageVector = Icons.Filled.AccountCircle,
-                    contentDescription = "profile picture",
-                )
                 TitleMediumText(
                     modifier = Modifier.fillMaxWidth(),
                     text = title,
-                    textAlign = titleAlign
+                    textAlign = titleAlign,
+                    showPadding = false
                 )
             }
         } else {
             Row(
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
+                TitleMediumText(
                     modifier = Modifier
-                        .size(48.dp)
-                        .padding(end = 8.dp),
-                    imageVector = Icons.Filled.AccountCircle,
-                    contentDescription = "profile picture",
-                )
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
+                        .fillMaxWidth()
+                        .height(48.dp),
                     text = title,
-                    textAlign = titleAlign
+                    textAlign = titleAlign,
+                    showPadding = false
                 )
             }
         }
     }, actions = {
-
+        Spacer(modifier = Modifier.size(48.dp))
     }, navigationIcon = {
         if (showBackButton) {
             IconButton(onClickBack) {

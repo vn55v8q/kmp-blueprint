@@ -28,7 +28,7 @@ fun BlueprintNavigation(
     onFinish: () -> Unit
 ) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "account") {
+    NavHost(navController = navController, startDestination = "register") {
         composable("splash") {
             val state = splashViewModel.state.collectAsState()
             SplashScreen(modifier = Modifier.fillMaxSize(),
@@ -60,6 +60,9 @@ fun BlueprintNavigation(
             val state = accountViewModel.state.collectAsState()
             RegisterScreen(
                 state = state.value,
+                onBackClick = {
+                    navController.popBackStack()
+                },
                 onUserClick = { newUser ->
                     accountViewModel.processUser(newUser)
                 },
@@ -70,6 +73,9 @@ fun BlueprintNavigation(
                     accountViewModel.processEmail(newEmail)
                 },
                 onPasswordClick = { newPass ->
+                    accountViewModel.confirmPass(newPass)
+                },
+                onPasswordChange = { newPass ->
                     accountViewModel.processPass(newPass)
                 },
                 onHideSnackbar = {
@@ -85,7 +91,6 @@ fun BlueprintNavigation(
                     accountViewModel.passwordLoginConfirm(password)
                 },
                 onClickPasswordRecovery = {},
-                onCloseScreen = onFinish,
             )
         }
         composable("login") {

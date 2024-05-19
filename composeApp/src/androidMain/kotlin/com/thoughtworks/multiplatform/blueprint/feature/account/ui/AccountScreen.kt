@@ -1,5 +1,6 @@
 package com.thoughtworks.multiplatform.blueprint.feature.account.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,13 +43,14 @@ import platform.log.Log
 fun AccountScreen(
     modifier: Modifier, onClickLogin: () -> Unit, onClickRegister: () -> Unit
 ) {
+    val configuration = LocalConfiguration.current
     val coroutine = rememberCoroutineScope()
     var openBottomSheet by rememberSaveable { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true,
+        skipPartiallyExpanded = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE,
         confirmValueChange = {
-        false
-    }
+            false
+        }
     )
     LaunchedEffect(key1 = Unit) {
         delay(2000)
@@ -67,7 +70,12 @@ fun AccountScreen(
                 contentDescription = "Logo"
             )
 
-            Box(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp), contentAlignment = Alignment.Center) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.Center
+            ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(8.dp)

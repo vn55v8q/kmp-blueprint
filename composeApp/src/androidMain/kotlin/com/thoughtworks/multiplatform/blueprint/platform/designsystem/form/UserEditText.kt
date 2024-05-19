@@ -28,7 +28,7 @@ fun UserEditText(
         label = {
             Text("Usuario")
         },
-        placeholder = { Text("ej: hardroid98") },
+        placeholder = { Text("Añade tu apodo") },
         leadingIcon = null,
         trailingIcon = null,
         prefix = null,

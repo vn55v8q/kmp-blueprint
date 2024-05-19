@@ -28,7 +28,7 @@ fun NameEditText(
         label = {
             Text("Nombre")
         },
-        placeholder = { Text("ej: Ivar Ragnarson") },
+        placeholder = { Text("Ingresa tu nombre") },
         leadingIcon = null,
         trailingIcon = null,
         prefix = null,

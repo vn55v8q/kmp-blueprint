@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 import platform.log.Log
 import platform.validators.domain.IsInvalidEmailForRegister
 import platform.validators.domain.IsInvalidName
-import platform.validators.domain.IsInvalidPassword
+import platform.validators.domain.PasswordValidator
+import platform.validators.domain.PasswordStrength
 import platform.validators.domain.UpdateLocalString
 import platform.validators.domain.exception.DotComInBlacklistException
 import platform.validators.domain.exception.EmailDomainInBlacklistException
@@ -25,7 +26,7 @@ class AccountViewModel(
     private val dotComUpdateLocalString: UpdateLocalString,
     private val isInvalidName: IsInvalidName,
     private val isInvalidEmailForRegister: IsInvalidEmailForRegister,
-    private val isInvalidPassword: IsInvalidPassword,
+    private val passwordValidator: PasswordValidator,
     private val registerUser: RegisterUser,
     private val loginUser: LoginUser
 ) : ViewModel() {
@@ -54,7 +55,7 @@ class AccountViewModel(
                     mutableStateFlow.update {
                         it.copy(
                             isValidEmail = false,
-                            errorMessage = "Este correo ya existe, recupera contraseña o utiliza otro email",
+                            message = "Este correo ya existe, recupera contraseña o utiliza otro email",
                             currentStep = 0
                         )
                     }
@@ -65,7 +66,7 @@ class AccountViewModel(
                         mutableStateFlow.update {
                             it.copy(
                                 isValidEmail = false,
-                                errorMessage = "Este correo no es permitido",
+                                message = "Este correo no es permitido",
                                 currentStep = 0
                             )
                         }
@@ -77,7 +78,7 @@ class AccountViewModel(
                         }
                         mutableStateFlow.update {
                             it.copy(
-                                isValidEmail = true, errorMessage = null, currentStep = 1
+                                isValidEmail = true, message = null, currentStep = 1
                             )
                         }
                     }
@@ -87,7 +88,7 @@ class AccountViewModel(
                 mutableStateFlow.update {
                     it.copy(
                         isValidEmail = false,
-                        errorMessage = "El nombre del email no es permitido en nuestros registros",
+                        message = "El nombre del email no es permitido en nuestros registros",
                         currentStep = 0
                     )
                 }
@@ -96,7 +97,7 @@ class AccountViewModel(
                 mutableStateFlow.update {
                     it.copy(
                         isValidEmail = false,
-                        errorMessage = "El dominio del email no es permitido",
+                        message = "El dominio del email no es permitido",
                         currentStep = 0
                     )
                 }
@@ -105,7 +106,7 @@ class AccountViewModel(
                 mutableStateFlow.update {
                     it.copy(
                         isValidEmail = false,
-                        errorMessage = "La extensión del correo no es permitido",
+                        message = "La extensión del correo no es permitido",
                         currentStep = 0
                     )
                 }
@@ -119,7 +120,7 @@ class AccountViewModel(
             if (isInvalidName) {
                 mutableStateFlow.update {
                     it.copy(
-                        isValidUser = false, errorMessage = "El nombre no corresponde"
+                        isValidUser = false, message = "El nombre no corresponde"
                     )
                 }
             } else {
@@ -130,7 +131,7 @@ class AccountViewModel(
                 }
                 mutableStateFlow.update {
                     it.copy(
-                        isValidUser = true, errorMessage = "", currentStep = 3
+                        isValidUser = true, message = "", currentStep = 3
                     )
                 }
             }
@@ -144,7 +145,7 @@ class AccountViewModel(
             if (isInvalidName) {
                 mutableStateFlow.update {
                     it.copy(
-                        isValidName = false, errorMessage = "El nombre no es permitido"
+                        isValidName = false, message = "El nombre no es permitido"
                     )
                 }
             } else {
@@ -155,7 +156,7 @@ class AccountViewModel(
                 }
                 mutableStateFlow.update {
                     it.copy(
-                        isValidName = true, currentStep = 2, errorMessage = ""
+                        isValidName = true, currentStep = 2, message = ""
                     )
                 }
             }
@@ -164,24 +165,40 @@ class AccountViewModel(
 
     fun processPass(pass: String) {
         viewModelScope.launch {
-            val isInvalidPass = isInvalidPassword.invoke(pass)
-            if (isInvalidPass) {
-                mutableStateFlow.update {
-                    it.copy(
-                        isValidPassword = false,
-                        errorMessage = "La contraseña no cumple con lo minimo de seguridad"
-                    )
-                }
-            } else {
-                sessionState.update {
-                    it.copy(
-                        password = pass
-                    )
-                }
+            val passwordStrength = passwordValidator.invoke(pass)
+            updatePasswordState(passwordStrength)
+            sessionState.update {
+                it.copy(
+                    password = pass
+                )
+            }
+        }
+    }
+
+    fun confirmPass(pass: String){
+        viewModelScope.launch {
+            val passwordStrength = passwordValidator.invoke(pass)
+            updatePasswordState(passwordStrength)
+            sessionState.update {
+                it.copy(
+                    password = pass
+                )
+            }
+            if (passwordStrength.isValid) {
                 createAccount()
             }
-
         }
+    }
+
+    fun updatePasswordState(passwordStrength: PasswordStrength) {
+        mutableStateFlow.update {
+            it.copy(
+                isValidPassword = passwordStrength.isValid,
+                passwordStrength = passwordStrength,
+                message = passwordStrength.message
+            )
+        }
+
     }
 
     fun createAccount() {
@@ -189,7 +206,7 @@ class AccountViewModel(
             mutableStateFlow.update {
                 it.copy(
                     isLoading = true,
-                    errorMessage = "Creating account",
+                    message = "Creating account",
                 )
             }
             try {
@@ -197,7 +214,7 @@ class AccountViewModel(
                     mutableStateFlow.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = "User create de pana",
+                            message = "User create de pana",
                         )
                     }
                 }
@@ -205,7 +222,7 @@ class AccountViewModel(
                 emailBlackListState.value.add(sessionState.value.email)
                 mutableStateFlow.update {
                     it.copy(
-                        isLoading = false, errorMessage = null, currentStep = 4
+                        isLoading = false, message = null, currentStep = 4
                     )
                 }
             }
@@ -215,40 +232,34 @@ class AccountViewModel(
     fun emailLoginConfirm() {
         mutableStateFlow.update {
             it.copy(
-                isLoading = false, errorMessage = null, currentStep = 5
+                isLoading = false, message = null, currentStep = 5
             )
         }
     }
 
     fun passwordLoginConfirm(password: String) {
         viewModelScope.launch {
-            Log.d("FirebaseUserClient", "passwordLoginConfirm on ViewModel : $password")
-            val isInvalidPassword = isInvalidPassword.invoke(password)
-            Log.d("FirebaseUserClient", "isInvalidPassword : $isInvalidPassword")
-            if (isInvalidPassword) {
-                mutableStateFlow.update {
-                    it.copy(
-                        isValidPassword = false,
-                        errorMessage = "Debe contener 6 caracteres como minimo"
-                    )
-                }
-            } else {
+            val passwordStrength = passwordValidator.invoke(password)
+            updatePasswordState(passwordStrength)
+            if (passwordStrength.isValid) {
                 val isLoginSuccess = loginUser.invoke(sessionState.value.email, password)
                 Log.d("FirebaseUserClient", "isLoginSuccess : $isLoginSuccess")
                 if (isLoginSuccess) {
                     mutableStateFlow.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = "Login OK de pana",
+                            message = "Login OK de pana",
                         )
                     }
+                    // TODO: Habilitar perfil con información de usuario
                 } else {
                     mutableStateFlow.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = "Login error de perro",
+                            message = "Login error de perro",
                         )
                     }
+                    // TODO: Controlar los usuarios bloqueados por intentos erroneos, fomentar recuperar contraseña
                 }
             }
         }
@@ -257,7 +268,7 @@ class AccountViewModel(
     fun clearErrorMessage() {
         mutableStateFlow.update {
             it.copy(
-                errorMessage = null,
+                message = null,
             )
         }
     }
@@ -273,6 +284,4 @@ class AccountViewModel(
         }
     }
 
-
 }
-
