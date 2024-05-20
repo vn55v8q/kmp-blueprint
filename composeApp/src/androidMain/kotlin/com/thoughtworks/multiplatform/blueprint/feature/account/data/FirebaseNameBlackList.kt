@@ -2,7 +2,6 @@ package com.thoughtworks.multiplatform.blueprint.feature.account.data
 
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
-import platform.log.Log
 import platform.validators.domain.BlackListClient
 import platform.validators.domain.exception.NotFoundNameDataException
 import platform.validators.domain.exception.NotFoundVersionForClientExeption
@@ -16,8 +15,6 @@ class FirebaseNameBlackList(
     override var mutablaList: MutableList<String> = mutableListOf()
 
     override suspend fun syncData() {
-        val tag = "UpdateLocalString"
-        Log.d(tag, "init FirebaseNameBlackList sync data")
         try {
             val blackListRef =
                 firestoreDatabase.collection(BLACK_LIST_KEY)
@@ -25,18 +22,13 @@ class FirebaseNameBlackList(
                     .collection(NAME_KEY)
             mutablaList.clear()
             val querySnapshot = blackListRef.get().await()
-            Log.d(tag, "list name size : ${querySnapshot.documents.size}")
             querySnapshot.documents.forEach { document ->
                 val word = document.getString(VALUE_KEY).orEmpty()
-                Log.d(tag, "word : $word")
                 if (word.isNotEmpty()) {
-                    Log.d(tag, "word : $word")
                     mutablaList.add(word)
                 }
             }
-            Log.d(tag, "return list : $mutablaList")
         } catch (e: Exception) {
-            Log.d(tag, "error : ${e.message}")
             throw NotFoundNameDataException()
         }
     }

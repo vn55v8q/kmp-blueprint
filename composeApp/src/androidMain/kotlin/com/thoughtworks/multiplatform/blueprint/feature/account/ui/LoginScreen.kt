@@ -29,8 +29,8 @@ fun LoginScreen(
     onPasswordRecovery: () -> Unit,
     goToHomeScreen: () -> Unit
 ) {
-    var email by remember { mutableStateOf("harttyn.arce@gmail.com") }
-    var pass by remember { mutableStateOf("Bpkeyts.1234$") }
+    var email by remember { mutableStateOf("") }
+    var pass by remember { mutableStateOf("") }
     val pagerState = rememberPagerState(pageCount = { 2 })
 
     LaunchedEffect(key1 = state.isLoggedUser) {
@@ -62,19 +62,6 @@ fun LoginScreen(
                     }
 
                     1 -> {
-                        /*PasswordStepComponent(
-                            modifier = Modifier.fillMaxWidth(),
-                            showPasswordStrength = false,
-                            password = pass,
-                            isValid = state.isValidPassword,
-                            isLoading = state.isLoading,
-                            passwordStrength = state.passwordStrength,
-                            onPasswordChange = { newPass ->
-                                pass = newPass
-                            },
-                            onConfirmPassword = {
-                                onPasswordClick(pass)
-                            })*/
                         LoginPassStepComponent(
                             modifier = Modifier,
                             password = pass,

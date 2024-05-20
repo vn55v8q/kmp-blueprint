@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import platform.log.Log
 import platform.validators.domain.IsInvalidEmailForRegister
 import platform.validators.domain.IsInvalidName
 import platform.validators.domain.PasswordValidator
@@ -47,7 +46,6 @@ class AccountViewModel(
     fun processEmail(email: String) {
         viewModelScope.launch {
             try {
-                Log.d("AccountViewModel", "email : $email")
                 val existEmailRegistered = emailBlackListState.value.filter { emailItem ->
                     emailItem == email
                 }.isNotEmpty()
@@ -61,7 +59,6 @@ class AccountViewModel(
                     }
                 } else {
                     val isInvalidEmail = isInvalidEmailForRegister.invoke(email)
-                    Log.d("AccountViewModel", "isValidMail $isInvalidEmail")
                     if (isInvalidEmail) {
                         mutableStateFlow.update {
                             it.copy(
@@ -84,7 +81,6 @@ class AccountViewModel(
                     }
                 }
             } catch (name: NameInBlackListException) {
-                Log.d("AccountViewModel", "NameInBlackListException")
                 mutableStateFlow.update {
                     it.copy(
                         isValidEmail = false,
@@ -93,7 +89,6 @@ class AccountViewModel(
                     )
                 }
             } catch (domain: EmailDomainInBlacklistException) {
-                Log.d("AccountViewModel", "EmailDomainInBlacklistException")
                 mutableStateFlow.update {
                     it.copy(
                         isValidEmail = false,
@@ -102,7 +97,6 @@ class AccountViewModel(
                     )
                 }
             } catch (dotCom: DotComInBlacklistException) {
-                Log.d("AccountViewModel", "DotComInBlacklistException")
                 mutableStateFlow.update {
                     it.copy(
                         isValidEmail = false,
@@ -140,6 +134,11 @@ class AccountViewModel(
     }
 
     fun processName(name: String) {
+        sessionState.update {
+            it.copy(
+                name = name
+            )
+        }
         viewModelScope.launch {
             val isInvalidName = isInvalidName.invoke(name)
             if (isInvalidName) {
@@ -149,11 +148,7 @@ class AccountViewModel(
                     )
                 }
             } else {
-                sessionState.update {
-                    it.copy(
-                        name = name
-                    )
-                }
+
                 mutableStateFlow.update {
                     it.copy(
                         isValidName = true, currentStep = 2, message = ""

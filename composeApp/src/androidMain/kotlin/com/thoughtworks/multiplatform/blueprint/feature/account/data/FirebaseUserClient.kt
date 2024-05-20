@@ -12,7 +12,6 @@ import feature.account.domain.NewUser
 import feature.account.domain.UrlReference
 import feature.account.domain.UserClient
 import kotlinx.coroutines.tasks.await
-import platform.log.Log
 
 class FirebaseUserClient(
     private val firebaseAuth: FirebaseAuth, private val firestore: FirebaseFirestore
@@ -49,27 +48,13 @@ class FirebaseUserClient(
 
     override suspend fun loginUser(email: String, password: String): Boolean {
         try {
-            Log.d(
-                "FirebaseUserClient",
-                "email: $email}, password $password"
-            )
             firebaseAuth.signInWithEmailAndPassword(email, password).await()
             val currentUser = firebaseAuth.currentUser
-            Log.d(
-                "FirebaseUserClient",
-                "currentUser: ${currentUser?.email}, ${currentUser?.uid}, ${currentUser?.displayName}"
-            )
             return currentUser?.uid.orEmpty().isNotEmpty()
         } catch (e: FirebaseTooManyRequestsException) {
             // TODO : Manejar este error... FirebaseTooManyRequestsException: We have blocked all requests from this device due to unusual activity. Try again later. [ Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. ]
-            Log.d(
-                "FirebaseUserClient", "error: $e"
-            )
             return false
         } catch (e: Exception) {
-            Log.d(
-                "FirebaseUserClient", "error: $e"
-            )
             return false
         }
     }
