@@ -5,6 +5,7 @@ import com.thoughtworks.multiplatform.blueprint.feature.account.data.FirebaseDot
 import com.thoughtworks.multiplatform.blueprint.feature.account.data.FirebaseNameBlackList
 import com.thoughtworks.multiplatform.blueprint.feature.account.data.FirebaseUserClient
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.AccountViewModel
+import feature.account.domain.GetAccount
 import feature.account.domain.LoginUser
 import feature.account.domain.RegisterUser
 import feature.account.domain.UserClient
@@ -141,4 +142,7 @@ val accountModule = module {
         FirebaseUserClient(get(), get())
     }
 
+    single {
+        GetAccount(get())
+    }
 }
