@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "841859101834",
+    "project_id": "kmp-blueprint",
+    "storage_bucket": "kmp-blueprint.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841859101834:android:36d3da60279e75ecffa973",
+        "android_client_info": {
+          "package_name": "com.thoughtworks.multiplatform.blueprint"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCO6PYOZ_2dL37ab5viOff0ZSU5bbbUSw0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841859101834:android:efd0bec23ed5b26bffa973",
+        "android_client_info": {
+          "package_name": "com.thoughtworks.multiplatform.blueprint.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCO6PYOZ_2dL37ab5viOff0ZSU5bbbUSw0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

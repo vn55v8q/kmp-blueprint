@@ -4,29 +4,25 @@ object FactoryTest {
     fun newFakeOnboarding(
         id: String = "1",
         name: String = "Fake Name",
-        pages: List<PageOnboarding> = emptyList(),
-        currentPage: Int = 0
+        pages: List<PageOnboarding> = emptyList()
     ): Onboarding {
         return Onboarding(
             id,
             name,
-            pages,
-            currentPage
+            pages
         )
     }
 
     fun newClientOnboarding(
         id: String = "1",
         name: String = "Fake Name",
-        pages: List<PageOnboarding> = emptyList(),
-        currentPage: Int = 0
+        pages: List<PageOnboarding> = emptyList()
     ): ClientOnboarding {
         return TestClientOnboarding(
             newFakeOnboarding(
                 id,
                 name,
-                pages,
-                currentPage
+                pages
             )
         )
     }

@@ -57,23 +57,33 @@ android {
             isMinifyEnabled = false
         }
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.7"
+    }
     buildFeatures {
+        compose = true
         buildConfig = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    //noinspection UseTomlInstead
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
+        implementation(libs.androidx.core.ktx)
         implementation(platform(libs.koin.bom))
         implementation(libs.koin.core)
         implementation(libs.koin.android)
         implementation(libs.kotlinx.coroutines.android)
-        implementation("androidx.navigation:navigation-compose:2.7.7")
-        implementation("io.coil-kt:coil-compose:2.6.0")
-        implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
-        implementation("com.google.firebase:firebase-storage")
+        implementation(libs.androidx.navigation.compose)
+        implementation(libs.coil.compose)
+        implementation(platform(libs.firebase.bom))
+        implementation(libs.firebase.storage)
+        implementation(libs.firebase.auth)
+        implementation(libs.firebase.firestore.ktx)
+        implementation("androidx.compose.material3:material3:1.3.0-alpha06")
+        implementation("androidx.compose.material:material-icons-extended:1.6.7")
     }
 
     flavorDimensions += "flavor"

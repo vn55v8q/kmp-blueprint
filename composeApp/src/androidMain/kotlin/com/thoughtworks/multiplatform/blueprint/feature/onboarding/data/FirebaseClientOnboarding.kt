@@ -6,6 +6,7 @@ import feature.onboarding.domain.ClientOnboarding
 import feature.onboarding.domain.Onboarding
 import feature.onboarding.domain.PageOnboarding
 import kotlinx.coroutines.tasks.await
+import platform.log.Log
 
 class FirebaseClientOnboarding(
     private val storage: FirebaseStorage
@@ -13,7 +14,7 @@ class FirebaseClientOnboarding(
 
     override suspend fun get(): Onboarding {
         val storageRef = storage.reference
-        val imagesRef: StorageReference = storageRef.child("images/onboarding")
+        val imagesRef: StorageReference = storageRef.child("onboarding/scene")
         val pages = mutableListOf<PageOnboarding>()
         try {
             val listResult = imagesRef.listAll().await()
@@ -27,12 +28,14 @@ class FirebaseClientOnboarding(
                     )
                 )
             }
+            Log.d("FirebaseClient", "pages: $pages")
             return Onboarding(
                 id = "firebase",
                 name = "Firebase Onboarding Storage",
                 pages = pages
             )
         } catch (e: Exception) {
+            Log.d("FirebaseClient", "Error: $e")
             return Onboarding.empty()
         }
     }
