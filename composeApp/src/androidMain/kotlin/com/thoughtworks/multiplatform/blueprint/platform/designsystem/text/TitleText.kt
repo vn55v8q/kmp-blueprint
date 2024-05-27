@@ -10,8 +10,8 @@ import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.AppT
 
 @Composable
 fun TitleMediumText(
-    modifier: Modifier = Modifier,
     text: String,
+    modifier: Modifier = Modifier,
     color: Color = Color.Black,
     textAlign: TextAlign = TextAlign.Unspecified,
     showPadding: Boolean = false,

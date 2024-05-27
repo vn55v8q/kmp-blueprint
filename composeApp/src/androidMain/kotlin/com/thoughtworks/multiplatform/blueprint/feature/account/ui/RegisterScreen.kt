@@ -35,10 +35,10 @@ fun RegisterScreen(
     onClickPasswordRecovery: () -> Unit,
     goToHomeScreen: () -> Unit
 ) {
-    var user by remember { mutableStateOf("") }
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var pass by remember { mutableStateOf("") }
+    var user by remember { mutableStateOf("le_rat_luciano") }
+    var name by remember { mutableStateOf("Le Rat Luciano") }
+    var email by remember { mutableStateOf("leratliciano@gmail.com") }
+    var pass by remember { mutableStateOf("LeRatLuciano.123$") }
     val pagerState = rememberPagerState(pageCount = { 6 })
 
     LaunchedEffect(key1 = state.isCreateUser) {

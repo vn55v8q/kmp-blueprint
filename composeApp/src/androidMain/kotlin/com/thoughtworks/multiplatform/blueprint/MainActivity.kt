@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.AccountViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ProfileViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.LoginViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.presentation.OnboardingViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashViewModel
@@ -18,6 +19,7 @@ class MainActivity : ComponentActivity() {
     private val onboardingViewModel: OnboardingViewModel by viewModel()
     private val accountViewModel: AccountViewModel by viewModel()
     private val loginViewModel: LoginViewModel by viewModel()
+    private val profileViewModel: ProfileViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +29,8 @@ class MainActivity : ComponentActivity() {
                     splashViewModel = splashViewModel,
                     onboardingViewModel = onboardingViewModel,
                     accountViewModel = accountViewModel,
-                    loginViewModel = loginViewModel
+                    loginViewModel = loginViewModel,
+                    profileViewModel = profileViewModel
                 ) {
                     finish()
                 }
