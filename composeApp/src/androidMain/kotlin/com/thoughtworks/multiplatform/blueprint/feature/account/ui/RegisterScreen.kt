@@ -37,7 +37,7 @@ fun RegisterScreen(
 ) {
     var user by remember { mutableStateOf("le_rat_luciano") }
     var name by remember { mutableStateOf("Le Rat Luciano") }
-    var email by remember { mutableStateOf("leratliciano@gmail.com") }
+    var email by remember { mutableStateOf("leratluciano2@gmail.com") }
     var pass by remember { mutableStateOf("LeRatLuciano.123$") }
     val pagerState = rememberPagerState(pageCount = { 6 })
 

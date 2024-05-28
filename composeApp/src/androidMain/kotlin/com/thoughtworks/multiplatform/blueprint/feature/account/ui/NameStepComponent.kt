@@ -19,6 +19,9 @@ import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.Title
 @Composable
 fun NameStepComponent(
     modifier: Modifier,
+    title: String = "Ingresa tu nombre",
+    description: String = "La información personal puede ser modificada desde la opción Editar Perfil.",
+    buttonText: String = "Continuar",
     name: String,
     errorMessage: String,
     isEnabled: Boolean = true,
@@ -34,12 +37,12 @@ fun NameStepComponent(
         TitleMediumText(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Start,
-            text = "Ingresa tu nombre"
+            text = title
         )
         BodySmallText(
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Start,
-            text = "La información personal puede ser modificada desde la opción Editar Perfil.",
+            text = description,
             showPadding = false
         )
         NameEditText(
@@ -59,7 +62,7 @@ fun NameStepComponent(
         }
         SimpleButton(
             modifier = Modifier,
-            text = "Continuar",
+            text = buttonText,
             isEnabled = isEnabled,
             onClick = onConfirmName
         )

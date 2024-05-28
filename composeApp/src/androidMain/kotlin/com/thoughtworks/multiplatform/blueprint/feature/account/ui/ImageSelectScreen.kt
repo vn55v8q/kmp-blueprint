@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ProfileState
+import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ProfileStep
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.button.LoadingButton
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.Toolbar
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.TitleMediumText
@@ -44,28 +44,27 @@ fun ImageSelectScreen(
         mutableStateOf<Uri?>(null)
     }
 
-    val singlePhotoPicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = {
-            uri = it
-        }
-    )
+    val singlePhotoPicker =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia(),
+            onResult = {
+                uri = it
+            })
 
     LaunchedEffect(key1 = Unit) {
-        singlePhotoPicker.launch(
-            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-        )
-    }
-    Scaffold(
-        topBar = {
-            Toolbar(
-                modifier = Modifier.fillMaxWidth(),
-                title = state.name,
-                showBackButton = true,
-                onClickBack = onBackClick
+        if (state.currentStep == ProfileStep.UPLOAD_IMAGE) {
+            singlePhotoPicker.launch(
+                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
             )
         }
-    ) {
+    }
+    Scaffold(topBar = {
+        Toolbar(
+            modifier = Modifier.fillMaxWidth(),
+            title = state.name,
+            showBackButton = true,
+            onClickBack = onBackClick
+        )
+    }) {
         Column(
             modifier = modifier
                 .fillMaxSize()

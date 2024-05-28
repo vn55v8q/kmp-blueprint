@@ -33,7 +33,6 @@ fun CircularWebImage(
     url: String,
     onClick: () -> Unit
 ) {
-    Log.d("CircularWebImage", "url: $url")
     if (url.isEmpty()) {
         CircularSolid(modifier.fillMaxSize(), onClick)
     } else {

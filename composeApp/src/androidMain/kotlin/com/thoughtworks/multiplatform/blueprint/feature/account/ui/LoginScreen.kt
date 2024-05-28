@@ -29,7 +29,7 @@ fun LoginScreen(
     onPasswordRecovery: () -> Unit,
     goToHomeScreen: () -> Unit
 ) {
-    var email by remember { mutableStateOf("leratliciano@gmail.com") }
+    var email by remember { mutableStateOf("leratluciano2@gmail.com") }
     var pass by remember { mutableStateOf("LeRatLuciano.123$") }
     val pagerState = rememberPagerState(pageCount = { 2 })
 

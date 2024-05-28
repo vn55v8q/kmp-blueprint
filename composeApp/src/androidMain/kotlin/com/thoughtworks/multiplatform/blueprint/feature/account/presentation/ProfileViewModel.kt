@@ -42,7 +42,7 @@ class ProfileViewModel(
         }
     }
 
-    fun onClickChangeImage() {
+    fun clickChangeImage() {
         mutableStepList.add(ProfileStep.UPLOAD_IMAGE)
         mutableStateFlow.update { currentState ->
             currentState.copy(
@@ -51,28 +51,48 @@ class ProfileViewModel(
         }
     }
 
-    fun nextScreen() {
-        val currentStep = state.value.currentStep
-        when (currentStep) {
-            ProfileStep.DEFAULT -> {
-                mutableStepList.add(ProfileStep.EDIT)
-                mutableStateFlow.update { currentState ->
-                    currentState.copy(
-                        currentStep = ProfileStep.EDIT
-                    )
-                }
-            }
+    fun clickProfile(){
+        mutableStepList.add(ProfileStep.EDIT)
+        mutableStateFlow.update { currentState ->
+            currentState.copy(
+                currentStep = ProfileStep.EDIT
+            )
+        }
+    }
 
-            ProfileStep.EDIT -> {
-                mutableStepList.add(ProfileStep.UPLOAD_IMAGE)
-                mutableStateFlow.update { currentState ->
-                    currentState.copy(
-                        currentStep = ProfileStep.UPLOAD_IMAGE
-                    )
-                }
-            }
+    fun clickChangeName() {
+        mutableStepList.add(ProfileStep.CHANGE_NAME)
+        mutableStateFlow.update { currentState ->
+            currentState.copy(
+                currentStep = ProfileStep.CHANGE_NAME
+            )
+        }
+    }
 
-            ProfileStep.UPLOAD_IMAGE -> errorUpdateState("No existe próximo step")
+    fun clickChangeUser() {
+        mutableStepList.add(ProfileStep.CHANGE_USER)
+        mutableStateFlow.update { currentState ->
+            currentState.copy(
+                currentStep = ProfileStep.CHANGE_USER
+            )
+        }
+    }
+
+    fun clickChangePronoun() {
+        mutableStepList.add(ProfileStep.CHANGE_PRONOUN)
+        mutableStateFlow.update { currentState ->
+            currentState.copy(
+                currentStep = ProfileStep.CHANGE_PRONOUN
+            )
+        }
+    }
+
+    fun clickChangeDescription() {
+        mutableStepList.add(ProfileStep.CHANGE_DESCRIPTION)
+        mutableStateFlow.update { currentState ->
+            currentState.copy(
+                currentStep = ProfileStep.CHANGE_DESCRIPTION
+            )
         }
     }
 
@@ -142,10 +162,18 @@ class ProfileViewModel(
         }
     }
 
+
+
 }
 
 enum class ProfileStep {
-    DEFAULT, EDIT, UPLOAD_IMAGE
+    DEFAULT,
+    EDIT,
+    UPLOAD_IMAGE,
+    CHANGE_NAME,
+    CHANGE_USER,
+    CHANGE_PRONOUN,
+    CHANGE_DESCRIPTION
 }
 
 data class ProfileState(

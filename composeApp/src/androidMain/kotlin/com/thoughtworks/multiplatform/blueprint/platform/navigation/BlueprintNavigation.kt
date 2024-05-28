@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.AccountViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ChangeNameViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ProfileViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.LoginViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.account.ui.AccountScreen
@@ -30,10 +31,11 @@ fun BlueprintNavigation(
     accountViewModel: AccountViewModel,
     loginViewModel: LoginViewModel,
     profileViewModel: ProfileViewModel,
+    changeNameViewModel: ChangeNameViewModel,
     onFinish: () -> Unit
 ) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "splash") {
+    NavHost(navController = navController, startDestination = "avatar") {
         composable("splash") {
             val state = splashViewModel.state.collectAsState()
             SplashScreen(modifier = Modifier.fillMaxSize(),
@@ -119,7 +121,11 @@ fun BlueprintNavigation(
             Text(text = "TODO: Recovery Screen")
         }
         composable("avatar") {
-            ProfileScene(profileViewModel, onFinish)
+            ProfileScene(
+                profileViewModel,
+                changeNameViewModel,
+                onFinish
+            )
         }
     }
 } 
