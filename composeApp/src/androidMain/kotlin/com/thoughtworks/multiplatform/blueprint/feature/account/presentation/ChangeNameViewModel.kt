@@ -2,16 +2,11 @@ package com.thoughtworks.multiplatform.blueprint.feature.account.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import feature.account.domain.ChangeName
-import feature.account.domain.GetAccount
-import feature.account.domain.ImageReference
-import feature.account.domain.TypeImage
-import feature.account.domain.UploadImage
+import feature.profile.domain.ChangeName
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import platform.log.Log
 import platform.validators.domain.IsInvalidName
 import platform.validators.domain.UpdateLocalString
 
@@ -26,6 +21,14 @@ class ChangeNameViewModel(
     init {
         viewModelScope.launch {
             nameUpdateLocalString.invoke()
+        }
+    }
+
+    fun reset(){
+        mutableStateFlow.update {
+            it.copy(
+                isChangedSuccess = false
+            )
         }
     }
 
@@ -50,17 +53,25 @@ class ChangeNameViewModel(
     }
 
     fun saveName(name: String) {
+        mutableStateFlow.update {
+            it.copy(
+                isLoading = true,
+                isChangedSuccess = false
+            )
+        }
         viewModelScope.launch {
             val isChangeName = changeName.invoke(name)
             if(isChangeName){
                 mutableStateFlow.update {
                     it.copy(
+                        isLoading = false,
                         isChangedSuccess = true,
                     )
                 }
             } else {
                 mutableStateFlow.update {
                     it.copy(
+                        isLoading = false,
                         message = "No se pudo cambiar el nombre, intentalo más tarde",
                         isChangedSuccess = false,
                     )
@@ -71,6 +82,7 @@ class ChangeNameViewModel(
 }
 
 data class ChangeNameState(
+    val isLoading: Boolean = false,
     val isEnabledChange: Boolean = true,
     val isValidUser: Boolean = false,
     val name: String = "",

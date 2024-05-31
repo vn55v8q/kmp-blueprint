@@ -10,8 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.button.SimpleButton
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.EmailEditText
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.button.LoadingButton
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.NameEditText
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.BodySmallText
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.TitleMediumText
@@ -19,6 +18,7 @@ import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.Title
 @Composable
 fun NameStepComponent(
     modifier: Modifier,
+    isLoading: Boolean,
     title: String = "Ingresa tu nombre",
     description: String = "La información personal puede ser modificada desde la opción Editar Perfil.",
     buttonText: String = "Continuar",
@@ -60,10 +60,11 @@ fun NameStepComponent(
                 textAlign = TextAlign.Start
             )
         }
-        SimpleButton(
+        LoadingButton(
             modifier = Modifier,
+            isLoading = isLoading,
             text = buttonText,
-            isEnabled = isEnabled,
+            isEnabled = isValid,
             onClick = onConfirmName
         )
     }

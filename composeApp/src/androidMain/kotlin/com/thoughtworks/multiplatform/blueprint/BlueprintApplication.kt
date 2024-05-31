@@ -2,10 +2,11 @@ package com.thoughtworks.multiplatform.blueprint
 
 import android.app.Application
 import com.thoughtworks.multiplatform.blueprint.feature.account.di.accountModule
-import com.thoughtworks.multiplatform.blueprint.feature.account.di.avatarModule
 import com.thoughtworks.multiplatform.blueprint.feature.account.di.changeNameModule
 import com.thoughtworks.multiplatform.blueprint.feature.account.di.loginModule
+import com.thoughtworks.multiplatform.blueprint.feature.avatar.di.avatarModule
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.di.onboardingModule
+import com.thoughtworks.multiplatform.blueprint.feature.profile.di.profileModule
 import com.thoughtworks.multiplatform.blueprint.feature.splash.di.splashModule
 import com.thoughtworks.multiplatform.blueprint.platform.di.applicationModule
 import io.github.aakira.napier.DebugAntilog
@@ -27,6 +28,7 @@ class BlueprintApplication : Application() {
                 onboardingModule,
                 splashModule,
                 accountModule,
+                profileModule,
                 loginModule,
                 avatarModule,
                 changeNameModule

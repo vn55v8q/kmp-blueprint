@@ -75,6 +75,7 @@ android {
         implementation(platform(libs.koin.bom))
         implementation(libs.koin.core)
         implementation(libs.koin.android)
+        implementation(libs.koin.android.compose)
         implementation(libs.kotlinx.coroutines.android)
         implementation(libs.androidx.navigation.compose)
         implementation(libs.coil.compose)
@@ -82,7 +83,7 @@ android {
         implementation(libs.firebase.storage)
         implementation(libs.firebase.auth)
         implementation(libs.firebase.firestore.ktx)
-        implementation("androidx.compose.material3:material3:1.3.0-alpha06")
+        implementation("androidx.compose.material3:material3:1.3.0-beta01")
         implementation("androidx.compose.material:material-icons-extended:1.6.7")
     }
 

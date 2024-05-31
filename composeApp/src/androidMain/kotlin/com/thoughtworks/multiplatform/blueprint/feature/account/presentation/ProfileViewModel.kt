@@ -1,40 +1,42 @@
 package com.thoughtworks.multiplatform.blueprint.feature.account.presentation
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import feature.account.domain.GetAccount
-import feature.account.domain.ImageReference
-import feature.account.domain.TypeImage
-import feature.account.domain.UploadImage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import platform.log.Log
 
 class ProfileViewModel(
-    private val getAccount: GetAccount,
-    private val uploadImage: UploadImage
+    private val getAccount: GetAccount
 ) : ViewModel() {
+    private val urlAvatar = mutableStateOf("")
     private val mutableStateFlow = MutableStateFlow(ProfileState.default())
     private val mutableStepList = mutableListOf(ProfileStep.DEFAULT)
     val state = mutableStateFlow.asStateFlow()
+
+    fun setUrl(url: String){
+        urlAvatar.value = url
+    }
 
     fun fetch() {
         try {
             viewModelScope.launch {
                 val account = getAccount.invoke()
-
-                mutableStateFlow.update { currentState ->
-                    currentState.copy(
-                        isLoading = false,
-                        urlImage = account.urlAvatar,
-                        name = account.name,
-                        user = account.user,
-                        pronoun = account.pronoun,
-                        shortDescription = account.description,
-                        message = ""
-                    )
+                val newState = mutableStateFlow.value.copy(
+                    isLoading = false,
+                    urlImage = urlAvatar.value,
+                    name = account.name,
+                    user = account.user,
+                    pronoun = account.pronoun,
+                    shortDescription = account.description,
+                    message = ""
+                )
+                if (!newState.isEqualTo(mutableStateFlow.value)) {
+                    mutableStateFlow.value = newState
                 }
             }
         } catch (e: Exception) {
@@ -42,125 +44,63 @@ class ProfileViewModel(
         }
     }
 
+    fun updateName(name: String) {
+        val newState = mutableStateFlow.value.copy(name = name)
+        if (!newState.isEqualTo(mutableStateFlow.value)) {
+            mutableStateFlow.value = newState
+        }
+    }
+
     fun clickChangeImage() {
         mutableStepList.add(ProfileStep.UPLOAD_IMAGE)
-        mutableStateFlow.update { currentState ->
-            currentState.copy(
-                currentStep = ProfileStep.UPLOAD_IMAGE
-            )
+        val newState = mutableStateFlow.value.copy(
+            currentStep = ProfileStep.UPLOAD_IMAGE
+        )
+        if (!newState.isEqualTo(mutableStateFlow.value)) {
+            mutableStateFlow.value = newState
         }
     }
 
     fun clickProfile(){
         mutableStepList.add(ProfileStep.EDIT)
-        mutableStateFlow.update { currentState ->
-            currentState.copy(
-                currentStep = ProfileStep.EDIT
-            )
-        }
-    }
-
-    fun clickChangeName() {
-        mutableStepList.add(ProfileStep.CHANGE_NAME)
-        mutableStateFlow.update { currentState ->
-            currentState.copy(
-                currentStep = ProfileStep.CHANGE_NAME
-            )
-        }
-    }
-
-    fun clickChangeUser() {
-        mutableStepList.add(ProfileStep.CHANGE_USER)
-        mutableStateFlow.update { currentState ->
-            currentState.copy(
-                currentStep = ProfileStep.CHANGE_USER
-            )
-        }
-    }
-
-    fun clickChangePronoun() {
-        mutableStepList.add(ProfileStep.CHANGE_PRONOUN)
-        mutableStateFlow.update { currentState ->
-            currentState.copy(
-                currentStep = ProfileStep.CHANGE_PRONOUN
-            )
-        }
-    }
-
-    fun clickChangeDescription() {
-        mutableStepList.add(ProfileStep.CHANGE_DESCRIPTION)
-        mutableStateFlow.update { currentState ->
-            currentState.copy(
-                currentStep = ProfileStep.CHANGE_DESCRIPTION
-            )
+        val newState = mutableStateFlow.value.copy(
+            currentStep = ProfileStep.EDIT
+        )
+        if (!newState.isEqualTo(mutableStateFlow.value)) {
+            mutableStateFlow.value = newState
         }
     }
 
     fun previousScreen() {
         mutableStepList.removeLastOrNull()
         if (mutableStepList.isEmpty()) {
-            mutableStateFlow.update { currentState ->
-                currentState.copy(
-                    isFinishFlow = true
-                )
+            val newState = mutableStateFlow.value.copy(
+                isFinishFlow = true
+            )
+            if (!newState.isEqualTo(mutableStateFlow.value)) {
+                mutableStateFlow.value = newState
             }
         } else {
             val previousStep = mutableStepList.last()
-            mutableStateFlow.update { currentState ->
-                currentState.copy(
-                    currentStep = previousStep
-                )
+            val newState = mutableStateFlow.value.copy(
+                currentStep = previousStep
+            )
+            if (!newState.isEqualTo(mutableStateFlow.value)) {
+                mutableStateFlow.value = newState
             }
-            viewModelScope.launch {
-                refreshAvatar()
-            }
-        }
-    }
-
-    private suspend fun refreshAvatar() {
-        try {
-            val refreshAccount = getAccount.invoke()
-            if (refreshAccount.urlAvatar != state.value.urlImage) {
-                mutableStateFlow.update { currentState ->
-                    currentState.copy(
-                        urlImage = refreshAccount.urlAvatar
-                    )
-                }
-            }
-        } catch (e: Exception) {
-            Log.d("Profile", "error e: ${e.message.orEmpty()}")
         }
     }
 
     fun errorUpdateState(message: String) {
-        mutableStateFlow.update { currentState ->
-            currentState.copy(
-                isLoading = false, message = message
-            )
+        val newState = mutableStateFlow.value.copy(
+            isLoading = false, message = message
+        )
+        if (!newState.isEqualTo(mutableStateFlow.value)) {
+            mutableStateFlow.value = newState
         }
     }
 
-    fun uploadImage(rawUri: String, typeImage: TypeImage) {
-        mutableStateFlow.update { currentState ->
-            currentState.copy(
-                isLoading = true
-            )
-        }
-        viewModelScope.launch {
-            try {
-                val imageReference = ImageReference(rawUri, typeImage)
-                val urlReference = uploadImage.invoke(imageReference)
-                mutableStateFlow.update { currentState ->
-                    currentState.copy(
-                        isLoading = false,
-                        urlImage = urlReference.url
-                    )
-                }
-            } catch (e: Exception) {
-                Log.d("Profile", "error e: ${e.message.orEmpty()}")
-            }
-        }
-    }
+
 
 
 
@@ -170,10 +110,6 @@ enum class ProfileStep {
     DEFAULT,
     EDIT,
     UPLOAD_IMAGE,
-    CHANGE_NAME,
-    CHANGE_USER,
-    CHANGE_PRONOUN,
-    CHANGE_DESCRIPTION
 }
 
 data class ProfileState(
@@ -199,5 +135,8 @@ data class ProfileState(
             message = "",
             currentStep = ProfileStep.DEFAULT
         )
+    }
+    fun isEqualTo(other: ProfileState): Boolean {
+        return this == other
     }
 }

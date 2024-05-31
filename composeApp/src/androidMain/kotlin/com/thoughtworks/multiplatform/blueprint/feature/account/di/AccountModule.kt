@@ -139,7 +139,7 @@ val accountModule = module {
     }
 
     single<UserClient> {
-        FirebaseUserClient(get(), get(), get(), get())
+        FirebaseUserClient(get(), get())
     }
 
     single {

@@ -1,4 +1,4 @@
-package com.thoughtworks.multiplatform.blueprint.feature.account.ui
+package com.thoughtworks.multiplatform.blueprint.feature.avatar.ui
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -24,21 +24,22 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ProfileState
-import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ProfileStep
+import com.thoughtworks.multiplatform.blueprint.feature.avatar.presentation.UpdateImageState
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.button.LoadingButton
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.Toolbar
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.TitleMediumText
 import com.thoughtworks.multiplatform.blueprint.platform.multimedia.ImageInfo
 import feature.account.domain.TypeImage
+import platform.log.Log
 
 @Composable
 fun ImageSelectScreen(
     modifier: Modifier,
-    state: ProfileState,
+    state: UpdateImageState,
     onProcessImage: (String, TypeImage) -> Unit,
     onBackClick: () -> Unit
 ) {
+    Log.d("Profile", "ImageSelectScreen name: ${state.name}")
     val context = LocalContext.current
     var uri by remember {
         mutableStateOf<Uri?>(null)
@@ -51,11 +52,9 @@ fun ImageSelectScreen(
             })
 
     LaunchedEffect(key1 = Unit) {
-        if (state.currentStep == ProfileStep.UPLOAD_IMAGE) {
-            singlePhotoPicker.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
-        }
+        singlePhotoPicker.launch(
+            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+        )
     }
     Scaffold(topBar = {
         Toolbar(
@@ -94,7 +93,6 @@ fun ImageSelectScreen(
                 val typeImage = ImageInfo.getTypeImage(context, uri)
                 onProcessImage(uri.toString(), typeImage)
             }
-
         }
     }
 }

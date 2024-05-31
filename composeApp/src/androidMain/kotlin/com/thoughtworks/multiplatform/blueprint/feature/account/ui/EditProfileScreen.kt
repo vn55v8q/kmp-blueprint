@@ -7,9 +7,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChevronRight
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,10 +22,12 @@ import com.thoughtworks.multiplatform.blueprint.platform.designsystem.image.Circ
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.panel.FormRow
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.spacer.MediumSpacer
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.BodySmallText
+import platform.log.Log
 
 @Composable
 fun EditProfileScreen(
-    modifier: Modifier, state: ProfileState,
+    modifier: Modifier,
+    state: ProfileState,
     onBackClick: () -> Unit,
     onClickChangeImage: () -> Unit,
     onClickChangeName: () -> Unit,
@@ -33,6 +35,7 @@ fun EditProfileScreen(
     onClickChangePronoun: () -> Unit,
     onClickChangeDescription: () -> Unit,
 ) {
+    Log.d("ProfileScene", "EditProfileScreen name: ${state.name}")
     Scaffold(
         topBar = {
             Toolbar(
@@ -91,11 +94,11 @@ fun EditProfileScreen(
             FormRow(
                 modifier = Modifier.fillMaxWidth().height(50.dp),
                 leftText = "Descripción",
-                rightText = state.pronoun,
+                rightText = state.shortDescription,
                 rightIcon = Icons.Rounded.ChevronRight,
                 onClick = onClickChangeDescription
             )
-            Divider()
+            HorizontalDivider()
         }
     }
 }

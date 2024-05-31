@@ -18,7 +18,7 @@ data class AccountState(
         fun default() = AccountState(
             isLoading = false,
             currentStep = 0,
-            isValidName = false,
+            isValidName = true,
             isValidUser = false,
             isValidEmail = false,
             passwordStrength = PasswordStrength.EMPTY,

@@ -12,40 +12,87 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.AccountViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ChangeNameViewModel
-import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ProfileViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.LoginViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ProfileViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.account.ui.AccountScreen
-import com.thoughtworks.multiplatform.blueprint.feature.account.ui.AvatarScreen
+import com.thoughtworks.multiplatform.blueprint.feature.avatar.ui.AvatarScreen
+import com.thoughtworks.multiplatform.blueprint.feature.account.ui.ChangeNameScreen
+import com.thoughtworks.multiplatform.blueprint.feature.account.ui.EditProfileScreen
+import com.thoughtworks.multiplatform.blueprint.feature.avatar.ui.ImageSelectScreen
 import com.thoughtworks.multiplatform.blueprint.feature.account.ui.LoginScreen
-import com.thoughtworks.multiplatform.blueprint.feature.account.ui.ProfileScene
 import com.thoughtworks.multiplatform.blueprint.feature.account.ui.RegisterScreen
+import com.thoughtworks.multiplatform.blueprint.feature.avatar.presentation.AvatarViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.avatar.presentation.UpdateImageViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.presentation.OnboardingViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.ui.OnboardingScreen
+import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashPanorama
 import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.splash.ui.SplashScreen
+import org.koin.androidx.compose.koinViewModel
+import platform.log.Log
+import java.net.URLDecoder
+import java.net.URLEncoder
 
 @Composable
 fun BlueprintNavigation(
-    splashViewModel: SplashViewModel,
-    onboardingViewModel: OnboardingViewModel,
-    accountViewModel: AccountViewModel,
-    loginViewModel: LoginViewModel,
-    profileViewModel: ProfileViewModel,
-    changeNameViewModel: ChangeNameViewModel,
     onFinish: () -> Unit
 ) {
+    Log.d("Profile", "BlueprintNavigation - init")
     val navController = rememberNavController()
+    val splashViewModel: SplashViewModel = koinViewModel()
+    val onboardingViewModel: OnboardingViewModel = koinViewModel()
+    val accountViewModel: AccountViewModel = koinViewModel()
+    val loginViewModel: LoginViewModel = koinViewModel()
+    val changeNameViewModel: ChangeNameViewModel = koinViewModel()
+    val profileViewModel: ProfileViewModel = koinViewModel()
+    val avatarViewModel : AvatarViewModel = koinViewModel()
+
+
     NavHost(navController = navController, startDestination = "avatar") {
         composable("splash") {
             val state = splashViewModel.state.collectAsState()
             SplashScreen(modifier = Modifier.fillMaxSize(),
                 state = state.value,
-                onNavigateToOnboarding = {
-                    navController.navigate("onboarding") {
-                        popUpTo("splash") {
-                            inclusive = true
+                onNavigateToPanorama = { panorama ->
+                    when (panorama) {
+                        SplashPanorama.DEFAULT -> Log.d("Splash", "Init state")
+                        SplashPanorama.ONBOARDING -> {
+                            navController.navigate("onboarding") {
+                                popUpTo("splash") {
+                                    inclusive = true
+                                }
+                            }
+                        }
+
+                        SplashPanorama.HOME -> {
+                            navController.navigate("home") {
+                                popUpTo("splash") {
+                                    inclusive = true
+                                }
+                            }
+                        }
+
+                        SplashPanorama.CREATE_ACCOUNT -> {
+                            navController.navigate("account") {
+                                popUpTo("splash") {
+                                    inclusive = true
+                                }
+                            }
+                        }
+
+                        SplashPanorama.ROOTED_DECIVE -> {
+
+                        }
+
+                        SplashPanorama.FORCE_UPDATE -> {
+
+                        }
+
+                        SplashPanorama.NOTIFICATION_INFO -> {
+
                         }
                     }
+
                 })
         }
         composable("onboarding") {
@@ -121,11 +168,82 @@ fun BlueprintNavigation(
             Text(text = "TODO: Recovery Screen")
         }
         composable("avatar") {
-            ProfileScene(
-                profileViewModel,
-                changeNameViewModel,
-                onFinish
+            LaunchedEffect(key1 = Unit) {
+                avatarViewModel.fetch()
+            }
+            val state by avatarViewModel.state.collectAsState()
+            AvatarScreen(
+                modifier = Modifier.fillMaxSize(),
+                state = state,
+                onClickEditProfile = {
+                    profileViewModel.setUrl(state.urlImage)
+                    navController.navigate("avatar-edit")
+                },
+                onClickChangeImage = {
+                    navController.navigate("change-image")
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable("avatar-edit") {
+            val stateProfile by profileViewModel.state.collectAsState()
+            LaunchedEffect(key1 = Unit) {
+                profileViewModel.fetch()
+            }
+            EditProfileScreen(
+                modifier = Modifier.fillMaxSize(),
+                state = stateProfile,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onClickChangeImage = {
+                    navController.navigate("change-image")
+                },
+                onClickChangeName = {
+                    navController.navigate("change-name")
+                },
+                onClickChangeUser = {
+
+                },
+                onClickChangePronoun = {
+
+                },
+                onClickChangeDescription = {
+
+                }
+            )
+        }
+        composable("change-name") {
+            val changeNameState by changeNameViewModel.state.collectAsState()
+            ChangeNameScreen(
+                modifier = Modifier.fillMaxSize(),
+                state = changeNameState,
+                onBackClick = {},//profileViewModel::previousScreen,
+                onChangeName = changeNameViewModel::processName,
+                onSaveName = { newName ->
+                    //changeNameViewModel.saveName(newName)
+                    //profileViewModel.updateName(newName)
+                    //profileViewModel.fetch()
+                },
+                onFinish = {
+                    //changeNameViewModel.reset()
+                    //navController.popBackStack()
+                }
+            )
+        }
+        composable("change-image") {
+            val updateImageViewModel : UpdateImageViewModel = koinViewModel()
+            val state by updateImageViewModel.state.collectAsState()
+            ImageSelectScreen(
+                modifier = Modifier.fillMaxSize(),
+                state = state,
+                onProcessImage = updateImageViewModel::uploadImage,
+                onBackClick = {
+                    navController.popBackStack()
+                }
             )
         }
     }
-} 
+}

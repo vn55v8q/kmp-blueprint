@@ -92,6 +92,7 @@ fun RegisterScreen(
                         NameStepComponent(modifier = Modifier.fillMaxWidth(),
                             name = name,
                             isValid = state.isValidName,
+                            isLoading = state.isLoading,
                             errorMessage = state.message.orEmpty(),
                             onNameChange = { newName ->
                                 name = newName
