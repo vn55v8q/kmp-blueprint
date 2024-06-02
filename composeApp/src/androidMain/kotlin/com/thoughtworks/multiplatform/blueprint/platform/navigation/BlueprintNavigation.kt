@@ -23,6 +23,8 @@ import com.thoughtworks.multiplatform.blueprint.feature.account.ui.LoginScreen
 import com.thoughtworks.multiplatform.blueprint.feature.account.ui.RegisterScreen
 import com.thoughtworks.multiplatform.blueprint.feature.avatar.presentation.AvatarViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.avatar.presentation.UpdateImageViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.home.presentation.HomeViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.home.ui.HomeScreen
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.presentation.OnboardingViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.ui.OnboardingScreen
 import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashPanorama
@@ -48,7 +50,7 @@ fun BlueprintNavigation(
     val avatarViewModel : AvatarViewModel = koinViewModel()
 
 
-    NavHost(navController = navController, startDestination = "avatar") {
+    NavHost(navController = navController, startDestination = "splash") {
         composable("splash") {
             val state = splashViewModel.state.collectAsState()
             SplashScreen(modifier = Modifier.fillMaxSize(),
@@ -162,7 +164,16 @@ fun BlueprintNavigation(
             })
         }
         composable("home") {
-            Text(text = "TODO: Home")
+            val viewModel : HomeViewModel = koinViewModel()
+            val state by viewModel.state.collectAsState()
+            HomeScreen(
+                modifier = Modifier.fillMaxSize(),
+                state = state,
+                onClickProfile = {
+                    navController.navigate("avatar")
+                }) {
+
+            }
         }
         composable("recovery-password") {
             Text(text = "TODO: Recovery Screen")

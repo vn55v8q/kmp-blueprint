@@ -17,7 +17,7 @@ class SplashViewModel(
     val state = mutableState.asStateFlow()
 
     // This is only for debug
-    val newPanorama = SplashPanorama.CREATE_ACCOUNT
+    val newPanorama = SplashPanorama.ONBOARDING
 
     init {
         fetch()

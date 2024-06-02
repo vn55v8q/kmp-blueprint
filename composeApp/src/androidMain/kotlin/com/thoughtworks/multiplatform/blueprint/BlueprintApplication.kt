@@ -5,6 +5,7 @@ import com.thoughtworks.multiplatform.blueprint.feature.account.di.accountModule
 import com.thoughtworks.multiplatform.blueprint.feature.account.di.changeNameModule
 import com.thoughtworks.multiplatform.blueprint.feature.account.di.loginModule
 import com.thoughtworks.multiplatform.blueprint.feature.avatar.di.avatarModule
+import com.thoughtworks.multiplatform.blueprint.feature.home.di.homeModule
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.di.onboardingModule
 import com.thoughtworks.multiplatform.blueprint.feature.profile.di.profileModule
 import com.thoughtworks.multiplatform.blueprint.feature.splash.di.splashModule
@@ -31,7 +32,8 @@ class BlueprintApplication : Application() {
                 profileModule,
                 loginModule,
                 avatarModule,
-                changeNameModule
+                changeNameModule,
+                homeModule
             )
         }
     }
