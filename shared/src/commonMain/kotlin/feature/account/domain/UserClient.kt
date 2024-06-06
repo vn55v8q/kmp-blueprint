@@ -5,5 +5,6 @@ interface UserClient {
 
     suspend fun loginUser(email: String, password: String): Boolean
     suspend fun getAccount(): Account
+    suspend fun isAuthenticatedUser() : Boolean
 
 }

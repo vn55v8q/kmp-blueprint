@@ -103,6 +103,7 @@ fun BlueprintNavigation(
             }
             val state = onboardingViewModel.state.collectAsState()
             OnboardingScreen(state = state.value, onFinish = {
+                onboardingViewModel.finish()
                 navController.navigate("account") {
                     popUpTo("onboarding") {
                         inclusive = true

@@ -98,6 +98,8 @@ class FirebaseUserClient(
         }
     }
 
-
+    override suspend fun isAuthenticatedUser(): Boolean {
+        return auth.currentUser?.uid.orEmpty().isNotEmpty()
+    }
 }
 

@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.thoughtworks.multiplatform.blueprint.feature.home.presentation.HomeState
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.button.SimpleButton
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.Toolbar
@@ -27,7 +29,7 @@ fun HomeScreen(
         topBar = {
             Toolbar(
                 modifier = Modifier.fillMaxWidth(),
-                title = "Registrate",
+                title = "Home",
                 showBackButton = true,
                 onClickBack = onBackClick
             )
@@ -43,7 +45,7 @@ fun HomeScreen(
                     horizontalArrangement = Arrangement.End
                 ) {
                     CircularWebImage(
-                        modifier = Modifier,
+                        modifier = Modifier.size(150.dp),
                         url = state.avatarUrl,
                         onClick = onClickProfile
                     )

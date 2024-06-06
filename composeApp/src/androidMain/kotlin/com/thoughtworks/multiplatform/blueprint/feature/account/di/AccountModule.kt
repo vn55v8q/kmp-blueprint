@@ -6,6 +6,7 @@ import com.thoughtworks.multiplatform.blueprint.feature.account.data.FirebaseNam
 import com.thoughtworks.multiplatform.blueprint.feature.account.data.FirebaseUserClient
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.AccountViewModel
 import feature.account.domain.GetAccount
+import feature.account.domain.IsAutenticatedUser
 import feature.account.domain.LoginUser
 import feature.account.domain.RegisterUser
 import feature.account.domain.UserClient
@@ -144,5 +145,9 @@ val accountModule = module {
 
     single {
         GetAccount(get())
+    }
+
+    single {
+        IsAutenticatedUser(get())
     }
 }
