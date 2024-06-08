@@ -133,12 +133,33 @@ class AccountViewModel(
         }
     }
 
-    fun processName(name: String) {
+    fun changedName(name: String) {
         sessionState.update {
             it.copy(
                 name = name
             )
         }
+        viewModelScope.launch {
+            val isInvalidName = isInvalidName.invoke(name)
+            if (isInvalidName) {
+                mutableStateFlow.update {
+                    it.copy(
+                        isValidName = false,
+                        message = "El nombre no es permitido"
+                    )
+                }
+            } else {
+                mutableStateFlow.update {
+                    it.copy(
+                        isValidName = true,
+                        message = ""
+                    )
+                }
+            }
+        }
+    }
+
+    fun processName(name: String) {
         viewModelScope.launch {
             val isInvalidName = isInvalidName.invoke(name)
             if (isInvalidName) {

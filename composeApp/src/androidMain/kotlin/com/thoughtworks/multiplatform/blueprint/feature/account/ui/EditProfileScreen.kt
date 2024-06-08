@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ProfileState
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.Toolbar
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.bar.Toolbar
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.image.CircularWebImage
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.panel.FormRow
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.spacer.MediumSpacer

@@ -12,11 +12,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,12 +28,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.thoughtworks.multiplatform.blueprint.feature.avatar.presentation.UpdateImageState
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.bar.SnackbarMessage
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.bar.SnackbarVisualsWithError
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.bar.Toolbar
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.button.LoadingButton
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.Toolbar
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.TitleMediumText
 import com.thoughtworks.multiplatform.blueprint.platform.multimedia.ImageInfo
 import feature.account.domain.TypeImage
-import platform.log.Log
+import kotlinx.coroutines.launch
 
 @Composable
 fun ImageSelectScreen(
@@ -39,7 +44,9 @@ fun ImageSelectScreen(
     onProcessImage: (String, TypeImage) -> Unit,
     onBackClick: () -> Unit
 ) {
-    Log.d("Profile", "ImageSelectScreen name: ${state.name}")
+
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
     val context = LocalContext.current
     var uri by remember {
         mutableStateOf<Uri?>(null)
@@ -56,14 +63,38 @@ fun ImageSelectScreen(
             PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
         )
     }
-    Scaffold(topBar = {
-        Toolbar(
-            modifier = Modifier.fillMaxWidth(),
-            title = state.name,
-            showBackButton = true,
-            onClickBack = onBackClick
-        )
-    }) {
+
+    LaunchedEffect(key1 = state.message) {
+        if (state.message.isNotEmpty()) {
+            scope.launch {
+                snackbarHostState.showSnackbar(
+                    SnackbarVisualsWithError(
+                        state.message,
+                        isError = false
+                    )
+                )
+            }
+        }
+    }
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(snackbarHostState) { data ->
+                SnackbarMessage(
+                    text = data.visuals.message,
+                    textButton = data.visuals.actionLabel.orEmpty()
+                ) {
+                    data.dismiss()
+                }
+            }
+        },
+        topBar = {
+            Toolbar(
+                modifier = Modifier.fillMaxWidth(),
+                title = state.name,
+                showBackButton = true,
+                onClickBack = onBackClick
+            )
+        }) {
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -73,7 +104,9 @@ fun ImageSelectScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
 
-            Button(onClick = {
+            Button(
+                enabled = state.isLoading.not(),
+                onClick = {
                 singlePhotoPicker.launch(
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                 )

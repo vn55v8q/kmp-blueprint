@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.thoughtworks.multiplatform.blueprint.feature.home.presentation.HomeState
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.button.SimpleButton
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.Toolbar
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.bar.Toolbar
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.image.CircularWebImage
 
 @Composable
@@ -30,7 +30,7 @@ fun HomeScreen(
             Toolbar(
                 modifier = Modifier.fillMaxWidth(),
                 title = "Home",
-                showBackButton = true,
+                showBackButton = false,
                 onClickBack = onBackClick
             )
         },

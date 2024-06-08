@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.AccountState
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.Toolbar
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.bar.Toolbar
 import platform.log.Log
 
 @Composable
@@ -25,6 +25,7 @@ fun RegisterScreen(
     state: AccountState,
     onBackClick: () -> Unit,
     onUserClick: (String) -> Unit,
+    onNameChange: (String) -> Unit,
     onNameClick: (String) -> Unit,
     onEmailClick: (String) -> Unit,
     onPasswordClick: (String) -> Unit,
@@ -35,9 +36,9 @@ fun RegisterScreen(
     onClickPasswordRecovery: () -> Unit,
     goToHomeScreen: () -> Unit
 ) {
-    var user by remember { mutableStateOf("le_rat_luciano") }
-    var name by remember { mutableStateOf("Le Rat Luciano") }
-    var email by remember { mutableStateOf("leratluciano2@gmail.com") }
+    var user by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     var pass by remember { mutableStateOf("LeRatLuciano.123$") }
     val pagerState = rememberPagerState(pageCount = { 6 })
 
@@ -96,6 +97,7 @@ fun RegisterScreen(
                             errorMessage = state.message.orEmpty(),
                             onNameChange = { newName ->
                                 name = newName
+                                onNameChange(name)
                             },
                             onConfirmName = {
                                 onNameClick(name)

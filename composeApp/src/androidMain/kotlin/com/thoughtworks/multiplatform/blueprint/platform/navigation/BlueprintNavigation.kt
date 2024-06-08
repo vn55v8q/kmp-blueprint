@@ -47,7 +47,7 @@ fun BlueprintNavigation(
     val loginViewModel: LoginViewModel = koinViewModel()
     val changeNameViewModel: ChangeNameViewModel = koinViewModel()
     val profileViewModel: ProfileViewModel = koinViewModel()
-    val avatarViewModel : AvatarViewModel = koinViewModel()
+    val avatarViewModel: AvatarViewModel = koinViewModel()
 
 
     NavHost(navController = navController, startDestination = "splash") {
@@ -124,6 +124,8 @@ fun BlueprintNavigation(
                 navController.popBackStack()
             }, onUserClick = { newUser ->
                 accountViewModel.processUser(newUser)
+            }, onNameChange = { newName ->
+                accountViewModel.changedName(newName)
             }, onNameClick = { newName ->
                 accountViewModel.processName(newName)
             }, onEmailClick = { newEmail ->
@@ -155,7 +157,7 @@ fun BlueprintNavigation(
             }, onLastStepClick = {
                 loginViewModel.onLastStepProcess()
             }, onCloseScreen = onFinish, goToHomeScreen = {
-                navController.navigate("avatar") {
+                navController.navigate("home") {
                     popUpTo("account") {
                         inclusive = true
                     }
@@ -165,16 +167,18 @@ fun BlueprintNavigation(
             })
         }
         composable("home") {
-            val viewModel : HomeViewModel = koinViewModel()
+            val viewModel: HomeViewModel = koinViewModel()
             val state by viewModel.state.collectAsState()
             HomeScreen(
                 modifier = Modifier.fillMaxSize(),
                 state = state,
                 onClickProfile = {
                     navController.navigate("avatar")
-                }) {
-
-            }
+                },
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
         composable("recovery-password") {
             Text(text = "TODO: Recovery Screen")
@@ -184,28 +188,21 @@ fun BlueprintNavigation(
                 avatarViewModel.fetch()
             }
             val state by avatarViewModel.state.collectAsState()
-            AvatarScreen(
-                modifier = Modifier.fillMaxSize(),
-                state = state,
-                onClickEditProfile = {
-                    profileViewModel.setUrl(state.urlImage)
-                    navController.navigate("avatar-edit")
-                },
-                onClickChangeImage = {
-                    navController.navigate("change-image")
-                },
-                onBackClick = {
-                    navController.popBackStack()
-                }
-            )
+            AvatarScreen(modifier = Modifier.fillMaxSize(), state = state, onClickEditProfile = {
+                profileViewModel.setUrl(state.urlImage)
+                navController.navigate("avatar-edit")
+            }, onClickChangeImage = {
+                navController.navigate("change-image")
+            }, onBackClick = {
+                navController.popBackStack()
+            })
         }
         composable("avatar-edit") {
             val stateProfile by profileViewModel.state.collectAsState()
             LaunchedEffect(key1 = Unit) {
                 profileViewModel.fetch()
             }
-            EditProfileScreen(
-                modifier = Modifier.fillMaxSize(),
+            EditProfileScreen(modifier = Modifier.fillMaxSize(),
                 state = stateProfile,
                 onBackClick = {
                     navController.popBackStack()
@@ -224,13 +221,11 @@ fun BlueprintNavigation(
                 },
                 onClickChangeDescription = {
 
-                }
-            )
+                })
         }
         composable("change-name") {
             val changeNameState by changeNameViewModel.state.collectAsState()
-            ChangeNameScreen(
-                modifier = Modifier.fillMaxSize(),
+            ChangeNameScreen(modifier = Modifier.fillMaxSize(),
                 state = changeNameState,
                 onBackClick = {},//profileViewModel::previousScreen,
                 onChangeName = changeNameViewModel::processName,
@@ -242,20 +237,17 @@ fun BlueprintNavigation(
                 onFinish = {
                     //changeNameViewModel.reset()
                     //navController.popBackStack()
-                }
-            )
+                })
         }
         composable("change-image") {
-            val updateImageViewModel : UpdateImageViewModel = koinViewModel()
+            val updateImageViewModel: UpdateImageViewModel = koinViewModel()
             val state by updateImageViewModel.state.collectAsState()
-            ImageSelectScreen(
-                modifier = Modifier.fillMaxSize(),
+            ImageSelectScreen(modifier = Modifier.fillMaxSize(),
                 state = state,
                 onProcessImage = updateImageViewModel::uploadImage,
                 onBackClick = {
                     navController.popBackStack()
-                }
-            )
+                })
         }
     }
 }

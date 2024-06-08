@@ -12,11 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.thoughtworks.multiplatform.blueprint.feature.avatar.presentation.AvatarState
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.bar.Toolbar
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.button.SimpleButton
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.Toolbar
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.image.CircularWebImage
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.TitleMediumText
-import platform.log.Log
 
 @Composable
 fun AvatarScreen(
@@ -26,13 +25,12 @@ fun AvatarScreen(
     onClickEditProfile: () -> Unit,
     onClickChangeImage: () -> Unit
 ) {
-    Log.d("ProfileScene", "AvatarScreen name: ${state.name}")
     Scaffold(
         topBar = {
             Toolbar(
                 modifier = Modifier.fillMaxWidth(),
                 title = state.name,
-                showBackButton = false,
+                showBackButton = true,
                 onClickBack = onBackClick
             )
         }

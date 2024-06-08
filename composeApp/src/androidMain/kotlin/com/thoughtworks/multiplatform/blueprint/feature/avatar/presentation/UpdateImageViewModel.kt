@@ -18,7 +18,8 @@ class UpdateImageViewModel(
     val state = mutableStateFlow.asStateFlow()
     fun uploadImage(rawUri: String, typeImage: TypeImage) {
         val loadingState = mutableStateFlow.value.copy(
-            isLoading = true
+            isLoading = true,
+            message = ""
         )
         if (!loadingState.isEqualTo(mutableStateFlow.value)) {
             mutableStateFlow.value = loadingState
@@ -31,7 +32,8 @@ class UpdateImageViewModel(
                 val newState = mutableStateFlow.value.copy(
                     isLoading = false,
                     isSelectedImage = true,
-                    urlAvatar = urlReference.url
+                    urlAvatar = urlReference.url,
+                    message = "Foto actualizada correctamente"
                 )
                 if (!newState.isEqualTo(mutableStateFlow.value)) {
                     mutableStateFlow.value = newState
@@ -48,13 +50,15 @@ data class UpdateImageState(
     val isSelectedImage: Boolean,
     val urlAvatar: String,
     val name: String,
+    val message: String
 ) {
     companion object {
         fun default() = UpdateImageState(
-            true,
+            false,
             false,
             "",
             "",
+            ""
         )
     }
 
