@@ -6,7 +6,6 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.thoughtworks.multiplatform.blueprint.feature.account.data.FirebaseUserClient
 import feature.account.domain.AuthenticationException
 import feature.profile.domain.Profile
 import feature.profile.domain.ProfileClient
@@ -26,6 +25,9 @@ class FirebaseProfileClient(
         private const val DESCRIPTION_KEY = "description"
         private const val NAME_KEY = "name"
         private const val UPDATE_NAME_KEY = "update.name"
+        private const val UPDATE_USER_KEY = "update.user"
+        private const val UPDATE_DESCRIPTION_KEY = "update.description"
+        private const val UPDATE_PRONOUN_KEY = "update.pronoun"
     }
 
     override suspend fun getProfile(): Profile {
@@ -74,6 +76,34 @@ class FirebaseProfileClient(
         }
     }
 
+    private suspend fun changeValue(
+        key: String,
+        newValue: String,
+        timeKey: String
+    ): Boolean {
+        try {
+            val currentUser = auth.currentUser
+            val id = currentUser?.uid.orEmpty()
+            if (id.isEmpty()) {
+                throw AuthenticationException()
+            }
+            val userRef = firestore.collection(USERS_KEY)
+            userRef
+                .document(id)
+                .update(
+                    mapOf(
+                        key to newValue,
+                        timeKey to Timestamp.now()
+                    )
+                )
+                .await()
+            return true
+        } catch (e: Exception) {
+            // TODO : Add to Crashlytics
+            return false
+        }
+    }
+
     override suspend fun changeName(newName: String): Boolean {
         try {
             val currentUser = auth.currentUser
@@ -82,35 +112,43 @@ class FirebaseProfileClient(
                 throw AuthenticationException()
             }
             saveNameInFirebaseAuth(currentUser, newName)
-            val userRef = firestore.collection(USERS_KEY)
-            userRef
-                .document(id)
-                .update(
-                    mapOf(
-                        NAME_KEY to newName,
-                        UPDATE_NAME_KEY to Timestamp.now()
-                    )
-                )
-                .await()
-            return true
+            return changeValue(NAME_KEY, newName, UPDATE_NAME_KEY)
         } catch (e: Exception) {
+            // TODO : Add to Crashlytics
             return false
         }
     }
 
+    override suspend fun changeUser(newName: String): Boolean {
+        return changeValue(USER_KEY, newName, UPDATE_USER_KEY)
+    }
+
+    override suspend fun changeDescription(newDescription: String): Boolean {
+        return changeValue(DESCRIPTION_KEY, newDescription, UPDATE_DESCRIPTION_KEY)
+    }
+
+    override suspend fun changePronoun(newPronoun: String): Boolean {
+        return changeValue(PRONOUN_KEY, newPronoun, UPDATE_PRONOUN_KEY)
+    }
+
+
     override suspend fun isChangeNameEnabled(): Boolean {
+        // TODO : Add rule to enable or disable changes on application
         return true
     }
 
     override suspend fun isChangeUserEnabled(): Boolean {
+        // TODO : Add rule to enable or disable changes on application
         return true
     }
 
     override suspend fun isChangePronounEnabled(): Boolean {
+        // TODO : Add rule to enable or disable changes on application
         return true
     }
 
     override suspend fun isChangeDescriptionEnabled(): Boolean {
+        // TODO : Add rule to enable or disable changes on application
         return true
     }
 }

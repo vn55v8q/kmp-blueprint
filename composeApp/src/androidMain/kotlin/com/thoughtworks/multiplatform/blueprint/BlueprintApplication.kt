@@ -2,11 +2,14 @@ package com.thoughtworks.multiplatform.blueprint
 
 import android.app.Application
 import com.thoughtworks.multiplatform.blueprint.feature.account.di.accountModule
-import com.thoughtworks.multiplatform.blueprint.feature.account.di.changeNameModule
+import com.thoughtworks.multiplatform.blueprint.feature.profile.di.changeNameModule
 import com.thoughtworks.multiplatform.blueprint.feature.account.di.loginModule
 import com.thoughtworks.multiplatform.blueprint.feature.avatar.di.avatarModule
 import com.thoughtworks.multiplatform.blueprint.feature.home.di.homeModule
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.di.onboardingModule
+import com.thoughtworks.multiplatform.blueprint.feature.profile.di.changeDescriptionModule
+import com.thoughtworks.multiplatform.blueprint.feature.profile.di.changePronounModule
+import com.thoughtworks.multiplatform.blueprint.feature.profile.di.changeUserModule
 import com.thoughtworks.multiplatform.blueprint.feature.profile.di.profileModule
 import com.thoughtworks.multiplatform.blueprint.feature.splash.di.splashModule
 import com.thoughtworks.multiplatform.blueprint.platform.di.applicationModule
@@ -33,6 +36,9 @@ class BlueprintApplication : Application() {
                 loginModule,
                 avatarModule,
                 changeNameModule,
+                changeUserModule,
+                changePronounModule,
+                changeDescriptionModule,
                 homeModule
             )
         }

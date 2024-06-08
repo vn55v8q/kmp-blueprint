@@ -40,29 +40,8 @@ class UpdateImageViewModel(
                 }
             } catch (e: Exception) {
                 Log.d("Profile", "error e: ${e.message.orEmpty()}")
+                // TODO: Add to crashlytics
             }
         }
-    }
-}
-
-data class UpdateImageState(
-    val isLoading: Boolean,
-    val isSelectedImage: Boolean,
-    val urlAvatar: String,
-    val name: String,
-    val message: String
-) {
-    companion object {
-        fun default() = UpdateImageState(
-            false,
-            false,
-            "",
-            "",
-            ""
-        )
-    }
-
-    fun isEqualTo(other: UpdateImageState): Boolean {
-        return this == other
     }
 }

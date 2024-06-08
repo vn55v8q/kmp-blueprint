@@ -1,6 +1,6 @@
 package com.thoughtworks.multiplatform.blueprint.feature.avatar.di
 
-import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ProfileViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.profile.presentation.ProfileViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.avatar.data.FirebaseAvatarClient
 import com.thoughtworks.multiplatform.blueprint.feature.avatar.presentation.AvatarViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.avatar.presentation.UpdateImageViewModel
@@ -24,10 +24,6 @@ val avatarModule = module {
             get(),
             get()
         )
-    }
-
-    viewModel {
-        ProfileViewModel(get())
     }
 
     viewModel {

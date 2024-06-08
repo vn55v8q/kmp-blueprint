@@ -93,7 +93,7 @@ class FirebaseUserClient(
                 description = description
             )
         } catch (e: Exception) {
-            Log.d("FirebaseUserClient", "Error: ${e.message}")
+            // TODO: Add this error to Crashlytics
             return Account.empty()
         }
     }

@@ -1,6 +1,7 @@
-package com.thoughtworks.multiplatform.blueprint.feature.account.di
+package com.thoughtworks.multiplatform.blueprint.feature.profile.di
 
-import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ChangeNameViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.account.di.nameType
+import com.thoughtworks.multiplatform.blueprint.feature.profile.presentation.ChangeNameViewModel
 import feature.profile.domain.ChangeName
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named

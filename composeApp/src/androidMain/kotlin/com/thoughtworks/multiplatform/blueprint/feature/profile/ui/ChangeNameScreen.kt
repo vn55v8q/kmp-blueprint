@@ -1,4 +1,4 @@
-package com.thoughtworks.multiplatform.blueprint.feature.account.ui
+package com.thoughtworks.multiplatform.blueprint.feature.profile.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,9 +15,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ChangeNameState
+import com.thoughtworks.multiplatform.blueprint.feature.profile.presentation.ChangeNameState
+import com.thoughtworks.multiplatform.blueprint.feature.account.ui.NameStepComponent
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.bar.Toolbar
-import platform.log.Log
 
 @Composable
 fun ChangeNameScreen(
@@ -28,7 +28,6 @@ fun ChangeNameScreen(
     onSaveName: (String) -> Unit,
     onFinish: () -> Unit
 ) {
-    Log.d("ProfileScene", "ChangeNameScreen name: ${state.name}")
     var name by remember {
         mutableStateOf("")
     }
@@ -52,7 +51,7 @@ fun ChangeNameScreen(
                 modifier = Modifier.fillMaxWidth(),
                 name = name,
                 isLoading = state.isLoading,
-                isValid = state.isValidUser,
+                isValid = state.isValidName,
                 errorMessage = state.message,
                 description = "El nombre se puede cambiar una vez cada 7 días.",
                 buttonText = "Guardar",

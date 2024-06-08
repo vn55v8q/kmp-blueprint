@@ -6,7 +6,6 @@ data class Account(
     val user: String,
     val pronoun: String,
     val description: String,
-    //val urlAvatar: String
 ) {
     companion object {
         fun empty() = Account(
@@ -15,7 +14,6 @@ data class Account(
             "",
             "",
             "",
-            //"",
         )
     }
 }

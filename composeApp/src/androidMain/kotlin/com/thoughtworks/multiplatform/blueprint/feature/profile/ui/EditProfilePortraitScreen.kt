@@ -1,4 +1,4 @@
-package com.thoughtworks.multiplatform.blueprint.feature.account.ui
+package com.thoughtworks.multiplatform.blueprint.feature.profile.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,16 +16,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ProfileState
+import com.thoughtworks.multiplatform.blueprint.feature.profile.presentation.ProfileState
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.bar.Toolbar
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.image.CircularWebImage
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.panel.FormRow
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.spacer.MediumSpacer
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.BodySmallText
-import platform.log.Log
 
 @Composable
-fun EditProfileScreen(
+fun EditProfilePortraitScreen(
     modifier: Modifier,
     state: ProfileState,
     onBackClick: () -> Unit,
@@ -35,7 +34,6 @@ fun EditProfileScreen(
     onClickChangePronoun: () -> Unit,
     onClickChangeDescription: () -> Unit,
 ) {
-    Log.d("ProfileScene", "EditProfileScreen name: ${state.name}")
     Scaffold(
         topBar = {
             Toolbar(

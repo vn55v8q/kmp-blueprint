@@ -7,33 +7,39 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.AccountViewModel
-import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ChangeNameViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.profile.presentation.ChangeNameViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.LoginViewModel
-import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.ProfileViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.profile.presentation.ProfileViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.account.ui.AccountScreen
 import com.thoughtworks.multiplatform.blueprint.feature.avatar.ui.AvatarScreen
-import com.thoughtworks.multiplatform.blueprint.feature.account.ui.ChangeNameScreen
-import com.thoughtworks.multiplatform.blueprint.feature.account.ui.EditProfileScreen
-import com.thoughtworks.multiplatform.blueprint.feature.avatar.ui.ImageSelectScreen
+import com.thoughtworks.multiplatform.blueprint.feature.profile.ui.ChangeNameScreen
 import com.thoughtworks.multiplatform.blueprint.feature.account.ui.LoginScreen
 import com.thoughtworks.multiplatform.blueprint.feature.account.ui.RegisterScreen
 import com.thoughtworks.multiplatform.blueprint.feature.avatar.presentation.AvatarViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.avatar.presentation.UpdateImageViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.avatar.ui.ImageSelectScreen
 import com.thoughtworks.multiplatform.blueprint.feature.home.presentation.HomeViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.home.ui.HomeScreen
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.presentation.OnboardingViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.onboarding.ui.OnboardingScreen
+import com.thoughtworks.multiplatform.blueprint.feature.profile.presentation.ChangeDescriptionViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.profile.presentation.ChangePronounViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.profile.presentation.ChangeUserViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.profile.ui.ChangeDescriptionScreen
+import com.thoughtworks.multiplatform.blueprint.feature.profile.ui.ChangePronounScreen
+import com.thoughtworks.multiplatform.blueprint.feature.profile.ui.ChangeUserScreen
+import com.thoughtworks.multiplatform.blueprint.feature.profile.ui.EditProfileScreen
 import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashPanorama
 import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.splash.ui.SplashScreen
 import org.koin.androidx.compose.koinViewModel
 import platform.log.Log
-import java.net.URLDecoder
-import java.net.URLEncoder
 
 @Composable
 fun BlueprintNavigation(
@@ -46,6 +52,9 @@ fun BlueprintNavigation(
     val accountViewModel: AccountViewModel = koinViewModel()
     val loginViewModel: LoginViewModel = koinViewModel()
     val changeNameViewModel: ChangeNameViewModel = koinViewModel()
+    val changeUserViewModel: ChangeUserViewModel = koinViewModel()
+    val changeDescriptionViewModel: ChangeDescriptionViewModel = koinViewModel()
+    val changePronounViewModel: ChangePronounViewModel = koinViewModel()
     val profileViewModel: ProfileViewModel = koinViewModel()
     val avatarViewModel: AvatarViewModel = koinViewModel()
 
@@ -199,8 +208,22 @@ fun BlueprintNavigation(
         }
         composable("avatar-edit") {
             val stateProfile by profileViewModel.state.collectAsState()
-            LaunchedEffect(key1 = Unit) {
-                profileViewModel.fetch()
+            val lifecycleOwner = LocalLifecycleOwner.current
+            val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
+
+            LaunchedEffect(lifecycleState) {
+                // Do something with your state
+                // You may want to use DisposableEffect or other alternatives
+                // instead of LaunchedEffect
+                when (lifecycleState) {
+                    Lifecycle.State.DESTROYED -> {}
+                    Lifecycle.State.INITIALIZED -> {}
+                    Lifecycle.State.CREATED -> {}
+                    Lifecycle.State.STARTED -> {}
+                    Lifecycle.State.RESUMED -> {
+                        profileViewModel.fetch()
+                    }
+                }
             }
             EditProfileScreen(modifier = Modifier.fillMaxSize(),
                 state = stateProfile,
@@ -214,29 +237,30 @@ fun BlueprintNavigation(
                     navController.navigate("change-name")
                 },
                 onClickChangeUser = {
-
+                    navController.navigate("change-user")
                 },
                 onClickChangePronoun = {
-
+                    navController.navigate("change-pronoun")
                 },
                 onClickChangeDescription = {
-
+                    navController.navigate("change-description")
                 })
         }
         composable("change-name") {
             val changeNameState by changeNameViewModel.state.collectAsState()
             ChangeNameScreen(modifier = Modifier.fillMaxSize(),
                 state = changeNameState,
-                onBackClick = {},//profileViewModel::previousScreen,
+                onBackClick = {
+                    navController.popBackStack()
+                },
                 onChangeName = changeNameViewModel::processName,
                 onSaveName = { newName ->
-                    //changeNameViewModel.saveName(newName)
-                    //profileViewModel.updateName(newName)
-                    //profileViewModel.fetch()
+                    changeNameViewModel.saveName(newName)
+                    profileViewModel.updateName(newName)
                 },
                 onFinish = {
-                    //changeNameViewModel.reset()
-                    //navController.popBackStack()
+                    changeNameViewModel.reset()
+                    navController.popBackStack()
                 })
         }
         composable("change-image") {
@@ -249,5 +273,58 @@ fun BlueprintNavigation(
                     navController.popBackStack()
                 })
         }
+
+        composable("change-user") {
+            val changeNameState by changeUserViewModel.state.collectAsState()
+            ChangeUserScreen(modifier = Modifier.fillMaxSize(),
+                state = changeNameState,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onChangeUser = changeUserViewModel::processUser,
+                onSaveUser = { newUser ->
+                    changeUserViewModel.saveUser(newUser)
+                    profileViewModel.updateUser(newUser)
+                },
+                onFinish = {
+                    changeUserViewModel.reset()
+                    navController.popBackStack()
+                })
+        }
+
+        composable("change-description") {
+            val changeDescriptionState by changeDescriptionViewModel.state.collectAsState()
+            ChangeDescriptionScreen(modifier = Modifier.fillMaxSize(),
+                state = changeDescriptionState,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onSaveDescription = { newDescription ->
+                    changeDescriptionViewModel.saveDescription(newDescription)
+                    profileViewModel.updateDescriprion(newDescription)
+                },
+                onFinish = {
+                    changeDescriptionViewModel.reset()
+                    navController.popBackStack()
+                })
+        }
+
+        composable("change-pronoun") {
+            val changePronounState by changePronounViewModel.state.collectAsState()
+            ChangePronounScreen(modifier = Modifier.fillMaxSize(),
+                state = changePronounState,
+                onBackClick = {
+                    navController.popBackStack()
+                },
+                onSaveDescription = { newPronoun ->
+                    changePronounViewModel.savePronoun(newPronoun)
+                    profileViewModel.updatePronoun(newPronoun)
+                },
+                onFinish = {
+                    changePronounViewModel.reset()
+                    navController.popBackStack()
+                })
+        }
+
     }
 }
