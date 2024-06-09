@@ -6,35 +6,29 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.thoughtworks.multiplatform.blueprint.feature.account.ui.UserStepComponent
+import com.thoughtworks.multiplatform.blueprint.feature.account.ui.TextStepComponent
 import com.thoughtworks.multiplatform.blueprint.feature.profile.presentation.ChangePronounState
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.bar.Toolbar
 
 @Composable
 fun ChangePronounScreen(
     modifier: Modifier,
+    isLandscape: Boolean,
     state: ChangePronounState,
     onBackClick: () -> Unit,
-    onSaveDescription: (String) -> Unit,
+    onChangePronoun: (String) -> Unit,
+    onSavePronoun: () -> Unit,
     onFinish: () -> Unit
 ) {
-    var user by remember {
-        mutableStateOf("")
-    }
     Scaffold(topBar = {
         Toolbar(
             modifier = Modifier.fillMaxWidth(),
-            title = "Usuario",
+            title = "Pronombre",
             showBackButton = true,
             onClickBack = onBackClick
         )
@@ -47,14 +41,30 @@ fun ChangePronounScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // TODO: Acá quede pronoun
-            Text(text = "TODO input")
+            TextStepComponent(
+                modifier = Modifier,
+                isLandscape = isLandscape,
+                isLoading = state.isLoading,
+                title = "Ingrese Pronombres",
+                label = "Pronombres",
+                description = "Los datos son privados y almacenados de forma segura.",
+                buttonText = "Guardar",
+                name = state.pronoun,
+                errorMessage = state.message,
+                isEnabled = state.isLoading.not(),
+                isValid = state.isValidPronoun,
+                onNameChange = { newDescription ->
+                    onChangePronoun(newDescription)
+                },
+                onConfirmName = {
+                    onSavePronoun()
+                }
+            )
         }
         LaunchedEffect(key1 = state.isChangedSuccess) {
             if(state.isChangedSuccess){
                 onFinish()
             }
         }
-
     }
 }

@@ -1,5 +1,6 @@
 package com.thoughtworks.multiplatform.blueprint.platform.navigation
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -7,6 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.compose.NavHost
@@ -45,7 +47,6 @@ import platform.log.Log
 fun BlueprintNavigation(
     onFinish: () -> Unit
 ) {
-    Log.d("Profile", "BlueprintNavigation - init")
     val navController = rememberNavController()
     val splashViewModel: SplashViewModel = koinViewModel()
     val onboardingViewModel: OnboardingViewModel = koinViewModel()
@@ -294,14 +295,20 @@ fun BlueprintNavigation(
 
         composable("change-description") {
             val changeDescriptionState by changeDescriptionViewModel.state.collectAsState()
+            val configuration = LocalConfiguration.current
+            val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
             ChangeDescriptionScreen(modifier = Modifier.fillMaxSize(),
+                isLandscape = isLandscape,
                 state = changeDescriptionState,
                 onBackClick = {
                     navController.popBackStack()
                 },
-                onSaveDescription = { newDescription ->
-                    changeDescriptionViewModel.saveDescription(newDescription)
-                    profileViewModel.updateDescriprion(newDescription)
+                onChangeDescription = { newDescription ->
+                    changeDescriptionViewModel.changeDescription(newDescription)
+                },
+                onSaveDescription = {
+                    changeDescriptionViewModel.saveDescription()
+                    profileViewModel.updateDescriprion(changeDescriptionState.description)
                 },
                 onFinish = {
                     changeDescriptionViewModel.reset()
@@ -311,14 +318,20 @@ fun BlueprintNavigation(
 
         composable("change-pronoun") {
             val changePronounState by changePronounViewModel.state.collectAsState()
+            val configuration = LocalConfiguration.current
+            val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
             ChangePronounScreen(modifier = Modifier.fillMaxSize(),
+                isLandscape = isLandscape,
                 state = changePronounState,
                 onBackClick = {
                     navController.popBackStack()
                 },
-                onSaveDescription = { newPronoun ->
-                    changePronounViewModel.savePronoun(newPronoun)
-                    profileViewModel.updatePronoun(newPronoun)
+                onChangePronoun = { newPronoun ->
+                    changePronounViewModel.changePronoun(newPronoun)
+                },
+                onSavePronoun = {
+                    changePronounViewModel.savePronoun()
+                    profileViewModel.updatePronoun(changePronounState.pronoun)
                 },
                 onFinish = {
                     changePronounViewModel.reset()

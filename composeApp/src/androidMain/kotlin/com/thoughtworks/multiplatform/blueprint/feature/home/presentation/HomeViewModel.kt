@@ -31,6 +31,11 @@ class HomeViewModel(
                 }
             } catch (e: Exception) {
                 // TODO : send event to Crashlytics
+                mutableStateFlow.update {
+                    it.copy(
+                        requireAuthentication = true
+                    )
+                }
             }
         }
     }
@@ -40,6 +45,7 @@ class HomeViewModel(
 data class HomeState(
     val isLoading: Boolean,
     val avatarUrl: String,
+    val requireAuthentication: Boolean = false
 ) {
     companion object {
         fun default() = HomeState(true, "")

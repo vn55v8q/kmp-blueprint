@@ -58,6 +58,10 @@ class FirebaseAvatarClient(
             )
         } catch (e: Exception) {
             // TODO : Registrar en Crashlytics
+            // TODO : Revisar permisos en Firebase Datastore, tiene fecha
+            //  match /{document=**} {
+            //      allow read, write: if request.time < timestamp.date(2024, 7, 9);
+            //  }
             Avatar.empty()
         }
     }

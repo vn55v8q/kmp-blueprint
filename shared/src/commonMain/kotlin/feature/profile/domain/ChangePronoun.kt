@@ -5,3 +5,10 @@ class ChangePronoun(
 ) {
     suspend fun invoke(pronoun: String) = client.changePronoun(pronoun)
 }
+
+class ValidatePronoun {
+    fun invoke(pronoun: String) : Boolean {
+        // TODO : Add all logic to validate pronouns
+        return pronoun.isNotEmpty()
+    }
+}

@@ -3,19 +3,31 @@ package com.thoughtworks.multiplatform.blueprint.feature.profile.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import feature.profile.domain.ChangeDescription
+import feature.profile.domain.ValidateDescription
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ChangeDescriptionViewModel(
-    private val changeUser: ChangeDescription
+    private val validateDescription: ValidateDescription,
+    private val changeDescription: ChangeDescription
 ) : ViewModel() {
     private val mutableStateFlow = MutableStateFlow(ChangeDescriptionState())
     val state = mutableStateFlow.asStateFlow()
 
+    fun changeDescription(newDescription : String){
+        viewModelScope.launch {
+            mutableStateFlow.update {
+              it.copy(
+                  isValidDescription = validateDescription.invoke(newDescription),
+                  description = newDescription
+              )
+            }
+        }
+    }
 
-    fun saveDescription(description: String) {
+    fun saveDescription() {
         mutableStateFlow.update {
             it.copy(
                 isLoading = true,
@@ -23,11 +35,10 @@ class ChangeDescriptionViewModel(
             )
         }
         viewModelScope.launch {
-            val isChangeUser = changeUser.invoke(description)
+            val isChangeUser = changeDescription.invoke(state.value.description)
             if (isChangeUser) {
                 mutableStateFlow.update {
                     it.copy(
-                        description = description,
                         isLoading = false,
                         isChangedSuccess = true,
                     )
