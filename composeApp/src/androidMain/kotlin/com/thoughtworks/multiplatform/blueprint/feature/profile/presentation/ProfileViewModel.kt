@@ -75,4 +75,5 @@ class ProfileViewModel(
             it.copy(pronoun = newPronoun)
         }
     }
+
 }

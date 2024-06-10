@@ -2,7 +2,7 @@ package com.thoughtworks.multiplatform.blueprint.feature.profile.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import feature.profile.domain.ChangeUser
+import feature.profile.domain.ChangeName
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -13,7 +13,7 @@ import platform.validators.domain.UpdateLocalString
 class ChangeNameViewModel(
     private val nameUpdateLocalString: UpdateLocalString,
     private val isInvalidName: IsInvalidName,
-    private val changeName: ChangeUser
+    private val changeName: ChangeName
 ) : ViewModel() {
     private val mutableStateFlow = MutableStateFlow(ChangeNameState())
     val state = mutableStateFlow.asStateFlow()
@@ -25,19 +25,23 @@ class ChangeNameViewModel(
         }
     }
 
-    fun processName(name: String) {
+    fun processName(newName: String) {
         viewModelScope.launch {
-            val isInvalidName = isInvalidName.invoke(name)
+            val isInvalidName = isInvalidName.invoke(newName)
             if (isInvalidName) {
                 mutableStateFlow.update {
                     it.copy(
-                        isValidName = false, message = "El nombre no corresponde"
+                        name = newName,
+                        isValidName = false,
+                        message = "El nombre no corresponde"
                     )
                 }
             } else {
                 mutableStateFlow.update {
                     it.copy(
-                        isValidName = true, message = ""
+                        name = newName,
+                        isValidName = true,
+                        message = ""
                     )
                 }
             }
@@ -45,7 +49,7 @@ class ChangeNameViewModel(
         }
     }
 
-    fun saveName(name: String) {
+    fun saveName() {
         mutableStateFlow.update {
             it.copy(
                 isLoading = true,
@@ -53,11 +57,11 @@ class ChangeNameViewModel(
             )
         }
         viewModelScope.launch {
-            val isChangeName = changeName.invoke(name)
+            val isChangeName = changeName.invoke(state.value.name)
             if (isChangeName) {
                 mutableStateFlow.update {
                     it.copy(
-                        name = name,
+                        name = state.value.name,
                         isLoading = false,
                         isChangedSuccess = true,
                     )

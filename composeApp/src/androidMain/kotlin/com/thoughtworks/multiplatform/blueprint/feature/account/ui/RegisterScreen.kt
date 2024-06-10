@@ -39,7 +39,7 @@ fun RegisterScreen(
     var user by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    var pass by remember { mutableStateOf("LeRatLuciano.123$") }
+    var pass by remember { mutableStateOf("") }
     val pagerState = rememberPagerState(pageCount = { 6 })
 
     LaunchedEffect(key1 = state.isCreateUser) {

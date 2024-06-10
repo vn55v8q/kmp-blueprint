@@ -256,7 +256,7 @@ fun BlueprintNavigation(
                 },
                 onChangeName = changeNameViewModel::processName,
                 onSaveName = { newName ->
-                    changeNameViewModel.saveName(newName)
+                    changeNameViewModel.saveName()
                     profileViewModel.updateName(newName)
                 },
                 onFinish = {
@@ -271,14 +271,15 @@ fun BlueprintNavigation(
                 state = state,
                 onProcessImage = updateImageViewModel::uploadImage,
                 onBackClick = {
+                    profileViewModel.setUrl(state.urlAvatar)
                     navController.popBackStack()
                 })
         }
 
         composable("change-user") {
-            val changeNameState by changeUserViewModel.state.collectAsState()
+            val changeUserState by changeUserViewModel.state.collectAsState()
             ChangeUserScreen(modifier = Modifier.fillMaxSize(),
-                state = changeNameState,
+                state = changeUserState,
                 onBackClick = {
                     navController.popBackStack()
                 },
