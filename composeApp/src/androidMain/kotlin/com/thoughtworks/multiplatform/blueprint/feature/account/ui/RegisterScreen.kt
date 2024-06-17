@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.thoughtworks.multiplatform.blueprint.feature.account.presentation.AccountState
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.Toolbar
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.bar.Toolbar
 import platform.log.Log
 
 @Composable
@@ -25,6 +25,7 @@ fun RegisterScreen(
     state: AccountState,
     onBackClick: () -> Unit,
     onUserClick: (String) -> Unit,
+    onNameChange: (String) -> Unit,
     onNameClick: (String) -> Unit,
     onEmailClick: (String) -> Unit,
     onPasswordClick: (String) -> Unit,
@@ -92,9 +93,11 @@ fun RegisterScreen(
                         NameStepComponent(modifier = Modifier.fillMaxWidth(),
                             name = name,
                             isValid = state.isValidName,
+                            isLoading = state.isLoading,
                             errorMessage = state.message.orEmpty(),
                             onNameChange = { newName ->
                                 name = newName
+                                onNameChange(name)
                             },
                             onConfirmName = {
                                 onNameClick(name)

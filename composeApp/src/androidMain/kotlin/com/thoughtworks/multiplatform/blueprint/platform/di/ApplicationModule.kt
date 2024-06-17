@@ -11,11 +11,11 @@ val applicationModule = module {
     single {
         FirebaseFirestore.getInstance()
     }
-    
+
     single<Settings> {
         Settings()
     }
-    
+
     single {
         Firebase.storage
     }

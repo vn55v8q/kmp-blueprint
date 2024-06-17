@@ -38,7 +38,7 @@ fun NameEditText(
         visualTransformation = VisualTransformation.None,
         keyboardOptions = KeyboardOptions.Default,
         keyboardActions = KeyboardActions.Default,
-        singleLine = false,
+        singleLine = true,
         interactionSource = null,
         shape = TextFieldDefaults.shape,
         colors = TextFieldDefaults.colors()

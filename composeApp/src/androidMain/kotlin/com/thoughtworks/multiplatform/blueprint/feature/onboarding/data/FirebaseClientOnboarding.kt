@@ -28,13 +28,13 @@ class FirebaseClientOnboarding(
                     )
                 )
             }
-            Log.d("FirebaseClient", "pages: $pages")
             return Onboarding(
                 id = "firebase",
                 name = "Firebase Onboarding Storage",
                 pages = pages
             )
         } catch (e: Exception) {
+            // TODO: Add this log to Crashlytics
             Log.d("FirebaseClient", "Error: $e")
             return Onboarding.empty()
         }

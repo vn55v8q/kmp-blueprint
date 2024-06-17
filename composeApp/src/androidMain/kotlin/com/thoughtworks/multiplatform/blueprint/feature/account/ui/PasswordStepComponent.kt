@@ -23,7 +23,6 @@ fun PasswordStepComponent(
     showPasswordStrength: Boolean = true,
     passwordStrength: PasswordStrength,
     isEnabled: Boolean = true,
-    errorMessage: String = "",
     isLoading: Boolean = false,
     isValid: Boolean,
     onPasswordChange: (String) -> Unit,

@@ -104,14 +104,6 @@ class LoginViewModel(
         }
     }
 
-    fun clearErrorMessage() {
-        mutableStateFlow.update {
-            it.copy(
-                errorMessage = null,
-            )
-        }
-    }
-
     fun onLastStepProcess() {
         val newStep = state.value.currentStep - 1
         if (newStep >= 0) {
@@ -123,6 +115,4 @@ class LoginViewModel(
         }
     }
 
-
 }
-

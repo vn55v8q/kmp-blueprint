@@ -31,12 +31,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.thoughtworks.multiplatform.blueprint.R
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.button.SimpleButton
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.form.Toolbar
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.bar.Toolbar
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.BodySmallText
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.AppTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import platform.log.Log
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,12 +52,12 @@ fun AccountScreen(
         }
     )
     LaunchedEffect(key1 = Unit) {
-        delay(2000)
+        delay(1000)
         openBottomSheet = true
     }
     Scaffold(topBar = {
         Toolbar(
-            modifier = Modifier.fillMaxWidth(), title = "Perfil"
+            modifier = Modifier.fillMaxWidth(), title = "Account"
         )
     }, content = { padding ->
 
@@ -91,7 +90,6 @@ fun AccountScreen(
                         text = "Inicio de sesión",
                         isEnabled = true,
                         onClick = {
-                            Log.d("AccountScreen", "OnClick")
                             coroutine.launch {
                                 openBottomSheet = true
                                 bottomSheetState.show()

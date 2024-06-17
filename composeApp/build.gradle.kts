@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
-    id("com.google.gms.google-services")
+    alias(libs.plugins.googleServices)
 }
 
 kotlin {
@@ -44,8 +44,8 @@ android {
         applicationId = "com.thoughtworks.multiplatform.blueprint"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = 4
+        versionName = "0.5.0"
     }
     packaging {
         resources {
@@ -68,13 +68,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    //noinspection UseTomlInstead
     dependencies {
         debugImplementation(libs.compose.ui.tooling)
         implementation(libs.androidx.core.ktx)
         implementation(platform(libs.koin.bom))
         implementation(libs.koin.core)
         implementation(libs.koin.android)
+        implementation(libs.koin.android.compose)
         implementation(libs.kotlinx.coroutines.android)
         implementation(libs.androidx.navigation.compose)
         implementation(libs.coil.compose)
@@ -82,8 +82,8 @@ android {
         implementation(libs.firebase.storage)
         implementation(libs.firebase.auth)
         implementation(libs.firebase.firestore.ktx)
-        implementation("androidx.compose.material3:material3:1.3.0-alpha06")
-        implementation("androidx.compose.material:material-icons-extended:1.6.7")
+        implementation(libs.androidx.material3)
+        implementation(libs.androidx.material.icons.extended)
     }
 
     flavorDimensions += "flavor"

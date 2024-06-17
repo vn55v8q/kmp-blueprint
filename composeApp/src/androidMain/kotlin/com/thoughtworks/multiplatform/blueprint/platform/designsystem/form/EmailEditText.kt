@@ -40,7 +40,7 @@ fun EmailEditText(
         visualTransformation = VisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         keyboardActions = KeyboardActions.Default,
-        singleLine = false,
+        singleLine = true,
         interactionSource = null,
         shape = TextFieldDefaults.shape,
         colors = TextFieldDefaults.colors()

@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashPanorama
 import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashViewState
 import platform.version.domain.entity.VersionStatus
 
@@ -17,17 +18,16 @@ import platform.version.domain.entity.VersionStatus
 fun SplashScreen(
     modifier: Modifier,
     state: SplashViewState,
-    onNavigateToOnboarding: () -> Unit
+    onNavigateToPanorama: (SplashPanorama) -> Unit
 ) {
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         Column {
             state.versionDevice?.let { VersionDeviceMolecule(state = it) }
         }
     }
-
-    LaunchedEffect(state.isNeedToShowOnboarding) {
-        if(state.isNeedToShowOnboarding){
-            onNavigateToOnboarding()
+    LaunchedEffect(state.panorama) {
+        if(state.panorama != SplashPanorama.DEFAULT){
+            onNavigateToPanorama(state.panorama)
         }
     }
 }
