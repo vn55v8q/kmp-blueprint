@@ -12,6 +12,7 @@ import com.thoughtworks.multiplatform.blueprint.feature.profile.di.changePronoun
 import com.thoughtworks.multiplatform.blueprint.feature.profile.di.changeUserModule
 import com.thoughtworks.multiplatform.blueprint.feature.profile.di.profileModule
 import com.thoughtworks.multiplatform.blueprint.feature.splash.di.splashModule
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.di.themeModule
 import com.thoughtworks.multiplatform.blueprint.platform.di.applicationModule
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
@@ -39,7 +40,8 @@ class BlueprintApplication : Application() {
                 changeUserModule,
                 changePronounModule,
                 changeDescriptionModule,
-                homeModule
+                homeModule,
+                themeModule,
             )
         }
     }

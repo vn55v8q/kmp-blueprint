@@ -20,7 +20,7 @@ import com.thoughtworks.multiplatform.blueprint.platform.designsystem.spacer.Sma
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.BodyMediumText
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.text.TitleMediumText
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.AppTheme
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.primaryLight
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.primaryLight
 
 @Composable
 fun AccountContent(
