@@ -12,7 +12,6 @@ class DataThemeClient(
 
     companion object {
         const val THEME_KEY = "theme-key"
-        const val IS_DARK_KEY = "dark-key"
     }
 
     override suspend fun get(): ThemeSelected {

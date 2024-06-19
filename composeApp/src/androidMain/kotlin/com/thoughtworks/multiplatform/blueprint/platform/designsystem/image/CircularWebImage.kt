@@ -20,10 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.onPrimaryContainerLight
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.primaryLight
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.surfaceBrightLight
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.surfaceDimLight
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.oficial.onPrimaryContainerLight
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.oficial.primaryLight
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.oficial.surfaceBrightLight
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.oficial.surfaceDimLight
 
 @Composable
 fun CircularWebImage(
