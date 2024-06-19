@@ -5,7 +5,6 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import platform.theme.data.DataThemeClient
 import platform.theme.domain.GetTheme
-import platform.theme.domain.SaveDarkOsSelected
 import platform.theme.domain.SaveTheme
 import platform.theme.domain.ThemeClient
 
@@ -22,11 +21,7 @@ val themeModule = module {
         GetTheme(get())
     }
 
-    single {
-        SaveDarkOsSelected(get())
-    }
-
     viewModel {
-        ThemeViewModel(get(), get(), get())
+        ThemeViewModel(get(), get())
     }
 }

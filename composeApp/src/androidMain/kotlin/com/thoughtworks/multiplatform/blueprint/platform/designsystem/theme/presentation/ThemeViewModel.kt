@@ -7,15 +7,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import platform.theme.domain.GetTheme
-import platform.theme.domain.SaveDarkOsSelected
 import platform.theme.domain.SaveTheme
 import platform.theme.domain.ThemeSelected
 import platform.theme.domain.ThemeType
 
 class ThemeViewModel(
     private val getTheme: GetTheme,
-    private val saveTheme: SaveTheme,
-    private val saveDarkOsSelected: SaveDarkOsSelected
+    private val saveTheme: SaveTheme
 ) : ViewModel() {
 
     private val mutableState = MutableStateFlow(ThemeState())
@@ -33,12 +31,6 @@ class ThemeViewModel(
                     newState.copy(theme = themeSelected)
                 }
             }
-        }
-    }
-
-    fun notificationDarkOsSelected() {
-        viewModelScope.launch {
-            saveDarkOsSelected.invoke()
         }
     }
 

@@ -12,13 +12,13 @@ class DataThemeClient(
 
     companion object {
         const val THEME_KEY = "theme-key"
+        const val IS_DARK_KEY = "dark-key"
     }
 
     override suspend fun get(): ThemeSelected {
         val cacheThemeValue = settings[THEME_KEY, ""]
         val type = when(cacheThemeValue){
             ThemeType.DEFAULT.name -> ThemeType.DEFAULT
-            ThemeType.DARK.name -> ThemeType.DARK
             ThemeType.PROTANOPIA.name -> ThemeType.PROTANOPIA
             ThemeType.TRITANOPIA.name -> ThemeType.TRITANOPIA
             ThemeType.DEUTERANOPIA.name -> ThemeType.DEUTERANOPIA

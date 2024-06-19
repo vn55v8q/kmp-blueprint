@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.presentation.ThemeState
+import platform.theme.domain.ThemeSelected
 import platform.theme.domain.ThemeType
 
 private val lightScheme = lightColorScheme(
@@ -254,13 +254,17 @@ val unspecified_scheme = ColorFamily(
 
 @Composable
 fun AppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    themeState: ThemeState = ThemeState(),
+    themeState: ThemeSelected = ThemeSelected(),
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when (themeState.theme.type) {
-        ThemeType.DEFAULT -> lightScheme
-        ThemeType.DARK -> darkScheme
+    val colorScheme = when (themeState.type) {
+        ThemeType.DEFAULT -> if (isDarkTheme) {
+            darkScheme
+        } else {
+            lightScheme
+        }
+
         ThemeType.DEUTERANOPIA -> lightScheme
         ThemeType.PROTANOPIA -> lightScheme
         ThemeType.TRITANOPIA -> lightScheme
@@ -271,7 +275,7 @@ fun AppTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = isDarkTheme
         }
     }
 

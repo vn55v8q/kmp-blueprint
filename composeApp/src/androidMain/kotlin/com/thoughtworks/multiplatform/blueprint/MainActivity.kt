@@ -20,14 +20,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             val themeViewModel: ThemeViewModel = koinViewModel()
             val themeState by themeViewModel.state.collectAsState()
-            val isDarkThemeOsSelected = isSystemInDarkTheme()
-            LaunchedEffect(key1 = Unit) {
-                if(isDarkThemeOsSelected){
-                    themeViewModel.notificationDarkOsSelected()
-                }
-            }
             AppTheme(
-                themeState = themeState
+                themeState = themeState.theme
             ) {
                 BlueprintNavigation {
                     finish()
