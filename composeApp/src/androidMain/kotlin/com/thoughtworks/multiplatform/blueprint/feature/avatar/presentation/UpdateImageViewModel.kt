@@ -39,7 +39,6 @@ class UpdateImageViewModel(
                     mutableStateFlow.value = newState
                 }
             } catch (e: Exception) {
-                Log.d("Profile", "error e: ${e.message.orEmpty()}")
                 // TODO: Add to crashlytics
             }
         }

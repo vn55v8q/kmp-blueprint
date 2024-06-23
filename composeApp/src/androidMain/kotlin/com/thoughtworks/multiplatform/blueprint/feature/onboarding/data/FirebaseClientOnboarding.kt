@@ -35,7 +35,6 @@ class FirebaseClientOnboarding(
             )
         } catch (e: Exception) {
             // TODO: Add this log to Crashlytics
-            Log.d("FirebaseClient", "Error: $e")
             return Onboarding.empty()
         }
     }

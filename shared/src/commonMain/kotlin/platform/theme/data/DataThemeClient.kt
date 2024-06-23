@@ -2,7 +2,6 @@ package platform.theme.data
 
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.get
-import platform.log.Log
 import platform.theme.domain.ThemeClient
 import platform.theme.domain.ThemeSelected
 import platform.theme.domain.ThemeType
@@ -31,10 +30,7 @@ class DataThemeClient(
     }
 
     override suspend fun save(themeType: ThemeType, isDark: Boolean) {
-        Log.d("ThemeViewModel", "DataThemeClient themeType: $themeType, isDark: $isDark")
         settings.putString(THEME_KEY, themeType.name)
         settings.putBoolean(IS_DARK_KEY, isDark)
     }
-
-
 }
