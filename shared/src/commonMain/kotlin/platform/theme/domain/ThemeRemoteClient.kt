@@ -1,6 +1,6 @@
 package platform.theme.domain
 
-interface ThemeClient {
-    fun get() : ThemeSelected
+interface ThemeRemoteClient {
     suspend fun save(themeType: ThemeType, isDark: Boolean)
+    suspend fun get() : ThemeSelected
 }

@@ -40,12 +40,19 @@ import com.thoughtworks.multiplatform.blueprint.feature.profile.ui.EditProfileSc
 import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashPanorama
 import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.splash.ui.SplashScreen
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.presentation.ThemeState
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.presentation.ThemeViewModel
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.ThemeScreen
 import org.koin.androidx.compose.koinViewModel
 import platform.log.Log
+import platform.theme.domain.ThemeType
 
 @Composable
 fun BlueprintNavigation(
-    onFinish: () -> Unit
+    themeState: ThemeState,
+    onFinish: () -> Unit,
+    onLoginSuccess: () -> Unit,
+    onClickItem: (ThemeType, Boolean) -> Unit,
 ) {
     val navController = rememberNavController()
     val splashViewModel: SplashViewModel = koinViewModel()
@@ -167,6 +174,7 @@ fun BlueprintNavigation(
             }, onLastStepClick = {
                 loginViewModel.onLastStepProcess()
             }, onCloseScreen = onFinish, goToHomeScreen = {
+                onLoginSuccess()
                 navController.navigate("home") {
                     popUpTo("account") {
                         inclusive = true
@@ -187,6 +195,9 @@ fun BlueprintNavigation(
                 },
                 onBackClick = {
                     navController.popBackStack()
+                },
+                onClickSettings = {
+                    navController.navigate("settings")
                 }
             )
         }
@@ -339,6 +350,14 @@ fun BlueprintNavigation(
                     navController.popBackStack()
                 })
         }
-
+        composable("settings"){
+            ThemeScreen(
+                name = themeState.theme.type.name,
+                onClickItem = onClickItem,
+                onFinishTheme = {
+                    navController.popBackStack()
+                }
+            )
+        }
     }
 }

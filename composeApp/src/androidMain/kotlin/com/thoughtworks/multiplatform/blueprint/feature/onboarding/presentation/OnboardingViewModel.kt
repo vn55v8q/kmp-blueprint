@@ -40,7 +40,12 @@ class OnboardingViewModel(
 
     fun finish() {
         viewModelScope.launch {
-            finishOnboarding.invoke()
+            try {
+                finishOnboarding.invoke(System.currentTimeMillis().toString())
+            } catch (e: Exception) {
+                // Add to Crashlytics
+                e.printStackTrace()
+            }
             mutableState.update {
                 it.copy(isFinish = true)
             }

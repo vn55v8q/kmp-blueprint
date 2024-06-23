@@ -35,33 +35,32 @@ val unspecified_scheme = ColorFamily(
 @Composable
 fun AppTheme(
     themeState: ThemeSelected = ThemeSelected(),
-    isDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     val colorScheme = when (themeState.type) {
-        ThemeType.DEFAULT -> if (isDarkTheme) {
+        ThemeType.DEFAULT -> if (themeState.isDark) {
             darkScheme
         } else {
             lightScheme
         }
 
-        ThemeType.DEUTERANOPIA -> if (isDarkTheme) {
+        ThemeType.DEUTERANOPIA -> if (themeState.isDark) {
             darkSchemeDeuteranopia
         } else {
             deuteranopiaScheme
         }
 
-        ThemeType.PROTANOPIA -> if (isDarkTheme) {
+        ThemeType.PROTANOPIA -> if (themeState.isDark) {
             darkSchemeProtanopia
         } else {
             protanopiaScheme
         }
-        ThemeType.TRITANOPIA -> if (isDarkTheme) {
+        ThemeType.TRITANOPIA -> if (themeState.isDark) {
             darkSchemeTritanopia
         } else {
             tritanopiaScheme
         }
-        ThemeType.ACHROMATOPSIA -> if (isDarkTheme) {
+        ThemeType.ACHROMATOPSIA -> if (themeState.isDark) {
             darkSchemeAchromatopsia
         } else {
             achromatopsiaScheme
@@ -72,13 +71,13 @@ fun AppTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = isDarkTheme
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = themeState.isDark
         }
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = AppTypography,
+        typography = getTypography(colorScheme),
         content = content
     )
 }

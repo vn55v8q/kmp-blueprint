@@ -112,7 +112,7 @@ fun ImageSelectLandscapeScreen(
                         )
 
                     }) {
-                    TitleMediumText("Seleccionar Imagen", color = Color.White)
+                    TitleMediumText("Seleccionar Imagen")
                 }
             }
 

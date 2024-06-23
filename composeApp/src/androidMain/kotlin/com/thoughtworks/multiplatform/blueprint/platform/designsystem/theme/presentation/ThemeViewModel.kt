@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import platform.log.Log
 import platform.theme.domain.GetTheme
 import platform.theme.domain.SaveTheme
 import platform.theme.domain.ThemeSelected
@@ -23,20 +24,21 @@ class ThemeViewModel(
         fetch()
     }
 
-    private fun fetch() {
+    fun fetch() {
         viewModelScope.launch {
             val themeSelected = getTheme.invoke()
-            if (themeSelected.type != state.value.theme.type) {
-                mutableState.update { newState ->
-                    newState.copy(theme = themeSelected)
-                }
+            Log.d("ThemeViewModel", "themeSelected: $themeSelected")
+            mutableState.update { newState ->
+                newState.copy(theme = themeSelected)
             }
         }
     }
 
-    fun save(type: ThemeType){
+    fun save(type: ThemeType, isDark: Boolean) {
+        Log.d("ThemeViewModel", "type: $type, isDark: $isDark")
         viewModelScope.launch {
-            saveTheme.invoke(type)
+            saveTheme.invoke(type, isDark)
+            fetch()
         }
     }
 

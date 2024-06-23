@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -23,8 +24,15 @@ class MainActivity : ComponentActivity() {
             AppTheme(
                 themeState = themeState.theme
             ) {
-                BlueprintNavigation {
-                    finish()
+                Surface{
+                    BlueprintNavigation(
+                        themeState = themeState,
+                        onClickItem = themeViewModel::save,
+                        onLoginSuccess = themeViewModel::fetch,
+                        onFinish = {
+                            finish()
+                        }
+                    )
                 }
             }
         }

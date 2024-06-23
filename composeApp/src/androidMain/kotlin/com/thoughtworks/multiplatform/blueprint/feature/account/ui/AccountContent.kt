@@ -71,7 +71,7 @@ fun AccountContent(
         ) {
             BodyMediumText(text = "¿No tienes cuenta?")
             SmallSpacer()
-            TitleMediumText(text = "Registrate", color = primaryLight)
+            TitleMediumText(text = "Registrate")
         }
     }
 }
