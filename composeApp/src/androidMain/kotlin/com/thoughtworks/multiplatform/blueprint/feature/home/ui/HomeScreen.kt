@@ -23,6 +23,7 @@ fun HomeScreen(
     modifier: Modifier,
     state: HomeState,
     onClickProfile: () -> Unit,
+    onClickSettings: () -> Unit,
     onBackClick: () -> Unit
 ) {
     Scaffold(
@@ -51,9 +52,12 @@ fun HomeScreen(
                     )
                 }
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-                    SimpleButton(modifier = Modifier, text = "ENTER", isEnabled = state.isLoading.not()){
-
-                    }
+                    SimpleButton(
+                        modifier = Modifier,
+                        text = "ENTER",
+                        isEnabled = state.isLoading.not(),
+                        onClick = onClickSettings
+                    )
                 }
             }
         },

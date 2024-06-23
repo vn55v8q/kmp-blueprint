@@ -1,12 +1,12 @@
 package com.thoughtworks.multiplatform.blueprint.platform.designsystem.text
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.AppTypography
 
 @Composable
 fun BodyMediumText(
@@ -20,11 +20,11 @@ fun BodyMediumText(
     BaseText(
         modifier = modifier,
         text = text,
-        color = color,
+        //color = color,
         showPadding = showPadding,
         textAlign = textAlign,
         paddingDefault = paddingDefault,
-        style = AppTypography.bodyMedium
+        style = MaterialTheme.typography.bodyMedium
     )
 }
 
@@ -40,11 +40,11 @@ fun BodySmallText(
     BaseText(
         modifier = modifier,
         text = text,
-        color = color,
+        //color = color,
         showPadding = showPadding,
         textAlign = textAlign,
         paddingDefault = paddingDefault,
-        style = AppTypography.bodySmall
+        style = MaterialTheme.typography.bodySmall
     )
 }
 
@@ -52,7 +52,7 @@ fun BodySmallText(
 fun BodyLargeText(
     modifier: Modifier = Modifier,
     text: String,
-    color: Color = Color.Black,
+    color: Color = MaterialTheme.colorScheme.onBackground,
     textAlign: TextAlign = TextAlign.Unspecified,
     showPadding: Boolean = false,
     paddingDefault: Dp = 16.dp
@@ -60,10 +60,10 @@ fun BodyLargeText(
     BaseText(
         modifier = modifier,
         text = text,
-        color = color,
+        //color = color,
         showPadding = showPadding,
         textAlign = textAlign,
         paddingDefault = paddingDefault,
-        style = AppTypography.bodyLarge
+        style = MaterialTheme.typography.bodyLarge
     )
 }

@@ -112,7 +112,7 @@ fun ImageSelectPortraitScreen(
                 )
 
             }) {
-                TitleMediumText("Seleccionar Imagen", color = Color.White)
+                TitleMediumText("Seleccionar Imagen")
             }
 
             AsyncImage(modifier = Modifier.size(248.dp), model = uri, contentDescription = null)

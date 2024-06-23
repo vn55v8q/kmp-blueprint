@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -21,11 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.onPrimaryContainerLight
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.primaryLight
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.surfaceBrightLight
-import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.surfaceDimLight
-import platform.log.Log
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.oficial.onPrimaryContainerLight
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.oficial.primaryLight
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.oficial.surfaceBrightLight
+import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.ui.theme.oficial.surfaceDimLight
 
 @Composable
 fun CircularWebImage(

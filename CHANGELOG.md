@@ -1,7 +1,8 @@
 # Changelog #
 
-## v0.5.0 *(YYYY-MM-DD)* ##
+## v0.6.0 *(YYYY-MM-DD)* ##
 
+- Themes Support in Android
 - Account Android
   - Create with email and password only Android
   - Profile avatar with Storage Firebase only Android
