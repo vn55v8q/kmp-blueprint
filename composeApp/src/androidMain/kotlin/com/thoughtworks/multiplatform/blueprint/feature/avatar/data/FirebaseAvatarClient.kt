@@ -52,6 +52,7 @@ class FirebaseAvatarClient(
                 }
             }
             Avatar(
+                id = id,
                 name = name,
                 urlImage = downloadUrl,
                 user = user

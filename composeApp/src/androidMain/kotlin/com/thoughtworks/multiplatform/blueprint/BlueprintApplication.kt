@@ -11,6 +11,7 @@ import com.thoughtworks.multiplatform.blueprint.feature.profile.di.changeDescrip
 import com.thoughtworks.multiplatform.blueprint.feature.profile.di.changePronounModule
 import com.thoughtworks.multiplatform.blueprint.feature.profile.di.changeUserModule
 import com.thoughtworks.multiplatform.blueprint.feature.profile.di.profileModule
+import com.thoughtworks.multiplatform.blueprint.feature.rooms.di.roomsModule
 import com.thoughtworks.multiplatform.blueprint.feature.splash.di.splashModule
 import com.thoughtworks.multiplatform.blueprint.platform.designsystem.theme.di.themeModule
 import com.thoughtworks.multiplatform.blueprint.platform.di.applicationModule
@@ -42,6 +43,7 @@ class BlueprintApplication : Application() {
                 changeDescriptionModule,
                 homeModule,
                 themeModule,
+                roomsModule
             )
         }
     }

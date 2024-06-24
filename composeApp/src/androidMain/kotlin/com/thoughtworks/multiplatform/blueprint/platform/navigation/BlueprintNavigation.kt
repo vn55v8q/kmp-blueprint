@@ -37,6 +37,8 @@ import com.thoughtworks.multiplatform.blueprint.feature.profile.ui.ChangeDescrip
 import com.thoughtworks.multiplatform.blueprint.feature.profile.ui.ChangePronounScreen
 import com.thoughtworks.multiplatform.blueprint.feature.profile.ui.ChangeUserScreen
 import com.thoughtworks.multiplatform.blueprint.feature.profile.ui.EditProfileScreen
+import com.thoughtworks.multiplatform.blueprint.feature.rooms.presentation.RoomsViewModel
+import com.thoughtworks.multiplatform.blueprint.feature.rooms.ui.RoomsScreen
 import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashPanorama
 import com.thoughtworks.multiplatform.blueprint.feature.splash.presentation.SplashViewModel
 import com.thoughtworks.multiplatform.blueprint.feature.splash.ui.SplashScreen
@@ -65,9 +67,10 @@ fun BlueprintNavigation(
     val changePronounViewModel: ChangePronounViewModel = koinViewModel()
     val profileViewModel: ProfileViewModel = koinViewModel()
     val avatarViewModel: AvatarViewModel = koinViewModel()
+    val roomViewModel: RoomsViewModel = koinViewModel()
 
 
-    NavHost(navController = navController, startDestination = "splash") {
+    NavHost(navController = navController, startDestination = "rooms") {
         composable("splash") {
             val state = splashViewModel.state.collectAsState()
             SplashScreen(modifier = Modifier.fillMaxSize(),
@@ -357,6 +360,17 @@ fun BlueprintNavigation(
                 onFinishTheme = {
                     navController.popBackStack()
                 }
+            )
+        }
+        composable("rooms") {
+            val roomState by roomViewModel.state.collectAsState()
+            LaunchedEffect(key1 = Unit) {
+                roomViewModel.fetch()
+            }
+            RoomsScreen(
+                state = roomState,
+                onCreate = roomViewModel::createRoom,
+                onJoin = roomViewModel::joinRoom
             )
         }
     }

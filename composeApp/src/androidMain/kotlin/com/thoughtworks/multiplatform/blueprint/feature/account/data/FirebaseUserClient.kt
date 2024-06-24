@@ -13,7 +13,6 @@ import feature.account.domain.EmailAddressIsAlreadyInUseException
 import feature.account.domain.NewUser
 import feature.account.domain.UserClient
 import kotlinx.coroutines.tasks.await
-import platform.log.Log
 
 class FirebaseUserClient(
     private val auth: FirebaseAuth,
@@ -53,8 +52,7 @@ class FirebaseUserClient(
     override suspend fun loginUser(email: String, password: String): Boolean {
         try {
             auth.signInWithEmailAndPassword(email, password).await()
-            val currentUser = auth.currentUser
-            return currentUser?.uid.orEmpty().isNotEmpty()
+            return getId().isNotEmpty()
         } catch (e: FirebaseTooManyRequestsException) {
             // TODO : Manejar este error... FirebaseTooManyRequestsException: We have blocked all requests from this device due to unusual activity. Try again later. [ Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later. ]
             return false
@@ -99,7 +97,11 @@ class FirebaseUserClient(
     }
 
     override suspend fun isAuthenticatedUser(): Boolean {
-        return auth.currentUser?.uid.orEmpty().isNotEmpty()
+        return getId().isNotEmpty()
+    }
+
+    override suspend fun getId(): String {
+        return auth.currentUser?.uid.orEmpty()
     }
 }
 
